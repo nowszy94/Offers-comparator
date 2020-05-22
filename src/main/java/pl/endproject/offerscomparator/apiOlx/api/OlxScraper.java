@@ -36,7 +36,7 @@ public class OlxScraper {
 
     private static List<String> connectElements(Elements foundElementsTitles, Elements foundElementsPrices, Integer size) {
         List<String> foundElements = new ArrayList<>();
-        for (int i = 0; i < (foundElementsTitles.size()); i++) {
+        for (int i = 0; i < size; i++) {
             String element = foundElementsTitles.get(i).text() + ":" + foundElementsPrices.get(i).text();
             foundElements.add(element);
         }
