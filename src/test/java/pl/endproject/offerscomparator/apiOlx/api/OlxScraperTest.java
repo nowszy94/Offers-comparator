@@ -28,7 +28,7 @@ public class OlxScraperTest {
     public void shouldDisplayCertainStringPatternAfterSearchingForItem() {
         //given
         String searchingItem = "Potop";
-        String patternString = ".*:.*";
+        String patternString = ".*::.*";
 
         //when
         List<String> result = OlxScraper.searchFor(searchingItem, 5);

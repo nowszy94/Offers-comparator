@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class Item {
     private String title;
-    private Integer price;
+    private String price;
 }
