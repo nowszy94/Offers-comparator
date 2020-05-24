@@ -13,6 +13,9 @@ public class OlxAdapter implements ProductRepository {
 
     @Override
     public List<Product> findByPhrase(String phrase) {
+        if (phrase == null || phrase.trim().isEmpty()) {
+            throw new RuntimeException("Phrase cannot be empty");
+        }
         //From Scraper To Dtos
         List<ProductDto> productDtos = getProductsFromScraper(phrase);
         //From Dtos To Domain
