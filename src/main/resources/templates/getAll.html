@@ -12,9 +12,12 @@
         <th>Title</th>
         <th>Price</th>
     </tr>
-    <tr th:each="item : ${allItems}">
-        <td th:text="${item.title}"></td>
+    <tr th:each="item : ${results}">
+        <td th:text="${item.name}"></td>
         <td th:text="${item.price}"></td>
+        <td th:text="${item.url}"></td>
+        <td th:text="${item.imageUrl}"></td>
+        <td th:text="${item.source.toString()}"></td>
     </tr>
 </table>
 </body>
