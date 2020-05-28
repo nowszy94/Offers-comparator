@@ -1,4 +1,4 @@
-package pl.endproject.offerscomparator.domain;
+package pl.endproject.offerscomparator.infrastructure.apiAllegro.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Product {
-
-    private Long id;
-    private String name;
+public class Item {
+    private String title;
     private Double price;
+    private Double priceWithShipping;
     private String url;
     private String imageUrl;
-    private Source source;
+    private String address;
+    private String condition;
 }
