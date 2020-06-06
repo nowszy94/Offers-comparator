@@ -251,7 +251,7 @@
 <div class="container searching-field">
     <form th:action="@{/findProducts}" method="post" class="form-inline md-form mr-auto mb-4">
         <input name="userSearch" id="autocomplete-input" class="form-control mr-sm-2" type="text" th:name="userSearch"
-               placeholder="Search" aria-label="Search"/>
+               placeholder="Search" aria-label="Search"  th:charset="UTF-8"/>
         <button class="btn btn-primary" type="submit">Search for product</button>
     </form>
 </div>

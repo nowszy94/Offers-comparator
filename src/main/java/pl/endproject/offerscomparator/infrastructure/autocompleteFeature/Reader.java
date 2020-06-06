@@ -1,57 +1,40 @@
 package pl.endproject.offerscomparator.infrastructure.autocompleteFeature;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
 
 
 public class Reader {
-    private static String path = "src/main/resources/nazwy.txt";
+    private List<String> words;
 
 
-    public static List<String> getWords(String searchStr) {
-        List<String> foundWords = new ArrayList<>();
-        FileInputStream inputStream = null;
-        Scanner sc = null;
-        try {
-            inputStream = new FileInputStream(path);
-            sc = new Scanner(inputStream, StandardCharsets.UTF_8);
+    public Reader(List<String> words) {
+        this.words = words;
+    }
 
-            while (sc.hasNextLine()) {
-//                String line = sc.nextLine().replace(" ", ",").replace("?", "").replace(".", "").toLowerCase();
-                String line = sc.nextLine().toLowerCase();
-                String[] lineArray = line.split(",");
+    public List<String> getWords() {
+        return words;
+    }
 
-                if (line.startsWith(searchStr)) {
-                    foundWords.add(lineArray[0]);
-                }
+    /* Wyszukuje tylko te slowa z pliku, ktore zaczynaja sie od searchStr*/
+
+    public  List<String> getWords(String searchStr) {
+
+        List<String> wordsFromReader = this.getWords();
+        List<String> suggestions = new ArrayList<>();
+
+        for (String s: wordsFromReader){
+            if (s.startsWith(searchStr)){
+                suggestions.add(s);
             }
 
-            if (!foundWords.contains(searchStr)) {
-                foundWords.add(searchStr);
-
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (sc != null) {
-                sc.close();
+            if (suggestions.size()>4){
+                break;
             }
         }
-        return foundWords;
+
+        return suggestions;
     }
 
 }
