@@ -12,7 +12,6 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ReaderConfig.class)
-@WebMvcTest(AutocompleteController.class)
 public class ReaderTest {
     private ReaderConfig readerConfig;
 

@@ -48,7 +48,6 @@ public class ProductController {
     @RequestMapping(value = "/suggestion", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public SuggestionsWrapper autocompleteSuggestions(@RequestParam("userSearch") String userSearch) throws IOException {
-        System.out.println("userSearch: " + userSearch);
         ArrayList<Phrase> suggestions = new ArrayList<>();
 
         SuggestionsWrapper sw = new SuggestionsWrapper();
