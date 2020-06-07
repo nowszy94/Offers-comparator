@@ -38,7 +38,7 @@ public class ProductDto {
     }
 
     private double convertStringToPrice(String editedPrice) {
-        return Double.parseDouble(editedPrice.replace(",", ".").replaceAll("[^0-9.]+", " "));
+        return Double.parseDouble(editedPrice.replace(",", ".").replaceAll("[^0-9.]+", " ").replace(" ",""));
     }
 
     private boolean checkIfStringContainsNumbers(String editedPrice) {
