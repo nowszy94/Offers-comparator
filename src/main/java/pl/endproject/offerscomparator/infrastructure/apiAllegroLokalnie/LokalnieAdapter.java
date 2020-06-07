@@ -19,7 +19,7 @@ public class LokalnieAdapter implements ProductRepository {
     }
 
     public List<LokalnieProductDto> adaptItemsFromScraper(String phrase) {
-        List<String> listFromScraper = LokalnieScraper.finder(phrase, 5);
+        List<String> listFromScraper = LokalnieScraper.finder(phrase);
         List<LokalnieProductDto> dtos = new ArrayList<>();
         List<String> parts;
 

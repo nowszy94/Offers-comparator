@@ -14,12 +14,10 @@ public class LokalnieScraperTest {
         String phrase = " sienkiewicz potop";
 
         //when
-        List<String> itemsFromScraper = LokalnieScraper.finder(phrase,5);
+        List<String> itemsFromScraper = LokalnieScraper.finder(phrase);
 
         //then
         Assert.assertFalse(itemsFromScraper.isEmpty());
-        Assert.assertEquals(5, itemsFromScraper.size());
-        Assert.assertTrue(itemsFromScraper.get(0).contains("Henryk Sienkiewicz - Potop t. 1-3"));
 
         // Display items
         for (String s: itemsFromScraper

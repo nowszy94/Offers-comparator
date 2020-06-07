@@ -91,7 +91,7 @@ public class OlxAdapterTest {
     @Test
     public void displayProductsCreatedFromScraper() {
         //given
-        String searchProduct = "krzesło";
+        String searchProduct = "krzywousty";
 
         //when
         List<Product> resultProducts = olxAdapter.findByPhrase(searchProduct);

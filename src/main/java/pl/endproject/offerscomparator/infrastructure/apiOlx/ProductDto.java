@@ -14,6 +14,7 @@ public class ProductDto {
     private String imageUrl;
     private final Source source = Source.OLX;
 
+
     public Product toDomain() {
         return Product.builder()
                 .name(this.name)

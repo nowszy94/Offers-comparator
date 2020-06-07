@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LokalnieScraper {
@@ -14,7 +15,7 @@ public class LokalnieScraper {
 
 
 
-    public static List<String> finder(String phrase, Integer count) {
+    public static List<String> finder(String phrase) {
         List<String> productsList = new ArrayList<>();
         String url = URL + "/oferty/?phrase=" + phrase.replace(" ","+") + "&city=&sort=price-asc&price_from=&price_to=&sort=price-asc&page=1&page=1";
 
@@ -24,7 +25,7 @@ public class LokalnieScraper {
 
         try {
             Document page = Jsoup.connect(url).userAgent("Jsoup Scraper").get();
-            productsList = connectElements(getTitles(page), getPrices(page), getImageUrl(page), getProductUrl(page), count);
+            productsList = connectElements(getTitles(page), getPrices(page), getImageUrl(page), getProductUrl(page));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,15 +38,12 @@ public class LokalnieScraper {
 
 
 
-    private static List<String> connectElements(Elements titles, Elements prices, Elements imageUrls, Elements productUrl, Integer size) {
+    private static List<String> connectElements(Elements titles, Elements prices, Elements imageUrls, Elements productUrl) {
 
         List<String> foundElements = new ArrayList<>();
+        Integer minValue = Collections.min(List.of(titles.size(), prices.size(), imageUrls.size(), productUrl.size()));
 
-        if (titles.size()<size){
-            size=titles.size();
-        }
-
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < minValue; i++) {
             foundElements.add(titles.get(i).text()
                     + "::" + prices.get(i).text()
                     + "::" + imageUrls.get(i).absUrl("src")
