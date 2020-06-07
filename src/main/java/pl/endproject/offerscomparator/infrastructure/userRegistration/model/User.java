@@ -1,9 +1,14 @@
 package pl.endproject.offerscomparator.infrastructure.userRegistration.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
+@Data
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -17,7 +22,7 @@ public class User {
     private String token;
     private Boolean active;
     private Integer points;
-    private Date last_update;
+    private LocalDate last_update;
     private String role;
 
     /*
@@ -31,25 +36,6 @@ public class User {
     public User() {
     }
 
-    public User(Long user_id, String login, String password, String email, String token, Boolean active, Integer points, Date last_update, String role) {
-        this.user_id = user_id;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.token = token;
-        this.active = active;
-        this.points = points;
-        this.last_update = last_update;
-        this.role = role;
-    }
-
-    public User(Long user_id, String login, String password, String email, String token) {
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.token = token;
-
-    }
 
     public Long getUser_id() {
         return user_id;
@@ -107,11 +93,11 @@ public class User {
         this.points = points;
     }
 
-    public Date getLast_update() {
+    public LocalDate getLast_update() {
         return last_update;
     }
 
-    public void setLast_update(Date last_update) {
+    public void setLast_update(LocalDate last_update) {
         this.last_update = last_update;
     }
 

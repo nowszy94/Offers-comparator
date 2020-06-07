@@ -3,6 +3,10 @@ package pl.endproject.offerscomparator.infrastructure.userRegistration.service;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.dao.UserDao;
+import pl.endproject.offerscomparator.infrastructure.userRegistration.model.User;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,5 +45,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public long getUserId() {
         return 0;
+    }
+
+    public List<User> getUserList(){return userDao.findAll();}
+
+    public void save(User user) {
+        userDao.save(user);
+    }
+
+    public Optional<User> findById(long id) {
+        return userDao.findById(id);
+    }
+
+    public void delete(User user) {
+        userDao.delete(user);
     }
 }

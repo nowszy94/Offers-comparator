@@ -1,17 +1,14 @@
 package pl.endproject.offerscomparator.api;
 
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.view.RedirectView;
 import pl.endproject.offerscomparator.domain.Product;
 import pl.endproject.offerscomparator.domain.ProductService;
+import pl.endproject.offerscomparator.infrastructure.userRegistration.service.UserServiceImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,8 +17,9 @@ public class ProductController {
     private ProductService productService;
 
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, UserServiceImpl userService) {
         this.productService = productService;
+
     }
 
     @GetMapping("/offers")
