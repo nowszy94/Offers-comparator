@@ -29,9 +29,7 @@ public class LokalnieScraper {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (productsList.isEmpty()){
-            throw new RuntimeException("Brak wyników");
-        }
+
         return productsList;
     }
 

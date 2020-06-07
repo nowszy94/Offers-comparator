@@ -16,22 +16,15 @@ public class ReaderConfig {
 
     private final String PATH = "src/main/resources/odm.txt";
 
-    /* Reader ktory ma w swoim konstruktorze liste, zawierajaca wszystkie slowa z pliku */
-
     @Bean
     public Reader readerFromFile() {
         List<String> wordsFromTextFile = readWordsFromFile();
         return new Reader(wordsFromTextFile);
     }
 
-    /* Pobiera liste z pliku i zwraca liste stringow */
-
     private List<String> readWordsFromFile() {
         return new ArrayList<>(getWords());
     }
-
-
-    /* Pobiera wszystkie slowa */
 
     public List<String> getWords() {
 
@@ -49,7 +42,6 @@ public class ReaderConfig {
 
                 foundWords.addAll(Arrays.asList(lineArray));
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -57,7 +49,6 @@ public class ReaderConfig {
             try {
                 if (inputStream != null) {
                     inputStream.close();
-
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -73,4 +64,5 @@ public class ReaderConfig {
     private String clearString(String s) {
         return s.replace(" ", ",").replace("?", "").replace(".", "").toLowerCase();
     }
+
 }

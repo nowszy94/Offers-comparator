@@ -32,6 +32,9 @@ public class ProductController {
     public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch) {
         if (!userSearch.isBlank()) {
             List<Product> products = productService.findForPhrase(userSearch);
+            if (products.isEmpty() ) {
+                return "no-results";
+            }
             model.addAttribute("products", products);
         }
         return "getAll";
@@ -47,19 +50,16 @@ public class ProductController {
     @ResponseBody
     public SuggestionsWrapper autocompleteSuggestions(@RequestParam("userSearch") String userSearch) throws IOException {
         ArrayList<Phrase> suggestions = new ArrayList<>();
-
         SuggestionsWrapper sw = new SuggestionsWrapper();
-
         Reader reader = readerConfig.readerFromFile();
 
         List<String> wordsFromReader = reader.getWords(userSearch);
-
         for (String productName : wordsFromReader) {
             suggestions.add(new Phrase(productName));
 
             sw.setSuggestions(suggestions);
-
         }
         return sw;
     }
+
 }
