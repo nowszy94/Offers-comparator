@@ -288,7 +288,10 @@
                 <td th:text="${itemStat.index + 1}"></td>
                 <td><img class="my-image" th:src="@{${product.imageUrl}}"/></td>
                 <td><a th:text="${product.name}" th:href="@{${product.url}}"></a></td>
-                <td th:text="${product.price} + ' zł'"></td>
+                <div th:switch="${product.price}">
+                    <td th:case="null">Not given</td>
+                    <td th:case="*" th:text="${product.price} + ' zł'"></td>
+                </div>
                 <td th:text="${product.source}"></td>
                 <td><span class="material-icons">favorite</span></td>
             </tr>
