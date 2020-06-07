@@ -43,7 +43,7 @@
         }
 
         .table-title .btn {
-            margin-top:-15px;
+            margin-top: -15px;
             color: #566787;
             float: right;
             font-size: 13px;
@@ -231,9 +231,8 @@
 <script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
 
 
-
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $('#autocomplete-input').devbridgeAutocomplete({
             serviceUrl: '/suggestion',
@@ -251,7 +250,7 @@
 <div class="container searching-field">
     <form th:action="@{/findProducts}" method="post" class="form-inline md-form mr-auto mb-4">
         <input name="userSearch" id="autocomplete-input" class="form-control mr-sm-2" type="text" th:name="userSearch"
-               placeholder="Search" aria-label="Search"  th:charset="UTF-8"/>
+               placeholder="Search" aria-label="Search" th:charset="UTF-8"/>
         <button class="btn btn-primary" type="submit">Search for product</button>
     </form>
 </div>
@@ -287,7 +286,10 @@
                 <td th:text="${itemStat.index + 1}"></td>
                 <td><img class="my-image" th:src="@{${product.imageUrl}}"/></td>
                 <td><a th:text="${product.name}" th:href="@{${product.url}}"></a></td>
-                <td th:text="${product.price} + ' zł'"></td>
+                <div th:switch="${product.price}">
+                    <td th:case="null">Not given</td>
+                    <td th:case="*" th:text="${product.price} + ' zł'"></td>
+                </div>
                 <td th:text="${product.source}"></td>
                 <td><span class="material-icons">favorite</span></td>
             </tr>

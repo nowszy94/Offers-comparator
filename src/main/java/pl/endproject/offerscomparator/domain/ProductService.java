@@ -21,7 +21,7 @@ public class ProductService {
         return productRepository.stream()
                 .map(repository -> repository.findByPhrase(phrase))
                 .flatMap(products -> products.stream())
-                .sorted(Comparator.comparing(Product::getPrice))
+                .sorted(Comparator.comparing(Product::getPrice, Comparator.nullsLast(Comparator.naturalOrder())))
                 .collect(Collectors.toList());
 
     }
