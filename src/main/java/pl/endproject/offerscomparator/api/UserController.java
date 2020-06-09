@@ -33,7 +33,7 @@ public class UserController {
             return "add-user";
         }
 
-        userService.save(user);
+
         model.addAttribute("users", userService.getUserList());
         return "index";
     }

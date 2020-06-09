@@ -5,8 +5,8 @@ import pl.endproject.offerscomparator.infrastructure.userRegistration.model.User
 
 public interface UserDao extends JpaRepository<User,Long> {
 
-    User findUserByLoginAndEmail(String login, String email);
-    User findUserByLoginOrEmailAndPassword(String login, String email, String password);
-//    boolean createUser(String login, String email, String password, String activationToken);
-//    boolean activateUser(String token);
+    User findUserByLoginOrEmail(String login, String email);
+    User findUserByLoginAndPasswordOrEmailAndPassword(String login, String password, String email, String password2);
+    User findUserByToken(String token);
+
 }

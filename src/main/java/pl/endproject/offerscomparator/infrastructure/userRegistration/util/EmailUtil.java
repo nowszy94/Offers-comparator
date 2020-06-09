@@ -5,35 +5,30 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.util.Properties;
 
 public final class EmailUtil {
 
     private EmailUtil(){}
 
-    public static void sendActivationEmail(String email, String token, String contextPath) {
-        Properties prop = new Properties();
-        prop.put("mail.smtp.auth", true);
-        prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", "smtp.mailtrap.io");
-        prop.put("mail.smtp.port", "25");
-        prop.put("mail.smtp.ssl.trust", "smtp.mailtrap.io");
+    public static void sendActivationEmail(String email, String token, String contextPath, Session mailProperties) {
 
-        Session session = Session.getInstance(prop, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("73a6c28dc5027f", "fdacaab8b079cc");
-            }
-        });
-
-        Message message = new MimeMessage(session);
+        Message message = new MimeMessage(mailProperties);
         try {
-            message.setFrom(new InternetAddress("javapoz20@gmail.com"));
+            message.setFrom(new InternetAddress("office@offerscomparator.com"));
             message.setRecipients(
                     Message.RecipientType.TO, InternetAddress.parse(email));
-            message.setSubject("Mail Subject");
+            message.setSubject("Offers Comparator - Account Confirmation");
 
-            String msg = "<a href=\"http://localhost:8080" + contextPath + "/login?token=" + token + "\">Activate your account</a>";
+            String header  ="Thank you for signing up for Offers Comparator!<br><br>" +
+                    "\n" +
+                    "Please verify your email address by clicking the button below.<br>\n";
+
+            String link = "<a href=\"http://localhost:8080" + contextPath + "/login?token=" + token + "\">Activate your account</a>";
+
+            String bottomText = "<br>If you didn't request this, please ignore this email.\n" +
+                    "<br><br>Yours, Offers Comparator Team";
+
+            String msg = header+link+bottomText;
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(msg, "text/html");

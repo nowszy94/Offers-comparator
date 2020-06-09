@@ -63,6 +63,7 @@ public class ItemRepositoryImplTest {
 
         //then
         assertThat(listOfAllegroItems.size(), is(greaterThan(0)));
+        System.out.println(listOfAllegroItems);
     }
 
     @Test

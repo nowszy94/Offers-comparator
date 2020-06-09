@@ -14,7 +14,8 @@ import java.util.Objects;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "userSeq")
+    @SequenceGenerator(name = "userSeq", sequenceName = "user_seq", allocationSize = 1)
     private Long user_id;
     private String login;
     private String password;
@@ -36,6 +37,28 @@ public class User {
     public User() {
     }
 
+    public User(String login, String password, String email, String token, Boolean active, Integer points, LocalDate last_update, String role) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.token = token;
+        this.active = active;
+        this.points = points;
+        this.last_update = last_update;
+        this.role = role;
+    }
+
+
+    public User(String login, String password, String email, String token) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.token = token;
+        this.active = false;
+        this.points = 0;
+        this.last_update = LocalDate.now();
+        this.role = "USER";
+    }
 
     public Long getUser_id() {
         return user_id;
