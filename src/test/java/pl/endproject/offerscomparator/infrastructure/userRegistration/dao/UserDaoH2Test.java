@@ -1,10 +1,12 @@
 package pl.endproject.offerscomparator.infrastructure.userRegistration.dao;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.endproject.offerscomparator.OffersComparatorApplication;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +33,6 @@ public class UserDaoH2Test {
 
     @Autowired
     private UserDao userDao;
-
 
 
     @Test
@@ -70,14 +72,24 @@ public class UserDaoH2Test {
         assertThat(userDao.findById(2L).get());
     }
 
-    @Test
-    public void shouldFindUserByTokenAfterTokenParemeterIsGiven(){
+    @Test(expected = IncorrectResultSizeDataAccessException.class)
+    public void shouldThrowIncorrectResultSizeDataAccessExceptionWhenLoginAndEmailHasAlreadyExist() {
         //given
-        String realToken="testtokentesttokentesttoken3";
-        String noExistToken="blabla";
+        String login = "Anna";
+        String email = "jk@test.pl";
         //when
-        User userExist=userDao.findUserByToken(realToken);
-        User userNoExist=userDao.findUserByToken(noExistToken);
+        userDao.findUserByLoginOrEmail(login, email);
+    }
+
+
+    @Test
+    public void shouldFindUserByTokenAfterTokenParameterIsGiven() {
+        //given
+        String realToken = "testtokentesttokentesttoken3";
+        String noExistToken = "blabla";
+        //when
+        User userExist = userDao.findUserByToken(realToken);
+        User userNoExist = userDao.findUserByToken(noExistToken);
         //then
         assertThat(userExist).isNotNull();
         assertThat(userNoExist).isNull();
@@ -88,7 +100,7 @@ public class UserDaoH2Test {
 
         //then
         for (TestCase singleTest : testCasesAllParametersAreCovered()) {
-            assertThat(userDao.findUserByLoginAndPasswordOrEmailAndPassword(singleTest.login,singleTest.password1,singleTest.email,singleTest.password2)).isEqualTo(singleTest.user);
+            assertThat(userDao.findUserByLoginAndPasswordOrEmailAndPassword(singleTest.login, singleTest.password1, singleTest.email, singleTest.password2)).isEqualTo(singleTest.user);
         }
     }
 
@@ -97,8 +109,23 @@ public class UserDaoH2Test {
 
         //then
         for (TestCase singleTest : testCasesSelectedParametersAreCovered()) {
-            assertThat(userDao.findUserByLoginOrEmail(singleTest.login,singleTest.email)).isEqualTo(singleTest.user);
+            assertThat(userDao.findUserByLoginOrEmail(singleTest.login, singleTest.email)).isEqualTo(singleTest.user);
         }
+    }
+
+    @Test
+    public void shouldReturnUniqueToken() {
+        //given
+        int tokenLength = 50;
+        String uniqueToken;
+        List<String> tokensList = userDao.findAll().stream().map(User::getToken).collect(Collectors.toList());
+        //when
+        do {
+            uniqueToken = RandomStringUtils.randomAlphanumeric(tokenLength);
+        } while (userDao.findUserByToken(uniqueToken) != null);
+        //then
+        assertThat(uniqueToken).isNotIn(tokensList);
+        assertThat("testtokentesttokentesttoken3").isIn(tokensList);
     }
 
     private List<TestCase> testCasesAllParametersAreCovered() {
@@ -120,12 +147,12 @@ public class UserDaoH2Test {
 
     private List<TestCase> testCasesSelectedParametersAreCovered() {
         return Arrays.asList(
-                new TestCase("Jan", null,userDao.findById(1L).get()),
-                new TestCase(null, "jk@test.pl",userDao.findById(1L).get()),
-                new TestCase("Janek", "jk@test.pl",userDao.findById(1L).get()),
-                new TestCase("Jan", "jz@test.pl",userDao.findById(1L).get()),
-                new TestCase("Jan", "jk@test.pl",userDao.findById(1L).get()),
-                new TestCase("Janek", "jz@test.pl",null)
+                new TestCase("Jan", null, userDao.findById(1L).get()),
+                new TestCase(null, "jk@test.pl", userDao.findById(1L).get()),
+                new TestCase("Janek", "jk@test.pl", userDao.findById(1L).get()),
+                new TestCase("Jan", "jz@test.pl", userDao.findById(1L).get()),
+                new TestCase("Jan", "jk@test.pl", userDao.findById(1L).get()),
+                new TestCase("Janek", "jz@test.pl", null)
         );
     }
 
@@ -144,7 +171,7 @@ public class UserDaoH2Test {
             this.user = user;
         }
 
-        public TestCase(String login, String email,User user) {
+        public TestCase(String login, String email, User user) {
             this.login = login;
             this.email = email;
             this.user = user;

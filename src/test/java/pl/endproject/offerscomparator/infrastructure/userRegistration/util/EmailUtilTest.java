@@ -5,14 +5,12 @@ import pl.endproject.offerscomparator.infrastructure.userRegistration.configurat
 
 import javax.mail.Session;
 
-import static org.junit.Assert.*;
-
 public class EmailUtilTest {
 
     @Test
     public void sendActivationEmail() {
         //given
-        String email="test@test.pl";
+        String email="test@test.com";
         String token="testToken";
         String contextPath="/testPath";
         Session mailProperties = MailTrapProperties.config();

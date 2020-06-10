@@ -14,7 +14,7 @@ public final class EmailUtil {
 
         Message message = new MimeMessage(mailProperties);
         try {
-            message.setFrom(new InternetAddress("office@offerscomparator.com"));
+            message.setFrom(new InternetAddress("captaintest@yandex.com"));
             message.setRecipients(
                     Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Offers Comparator - Account Confirmation");

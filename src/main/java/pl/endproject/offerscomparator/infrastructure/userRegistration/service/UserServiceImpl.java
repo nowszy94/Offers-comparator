@@ -1,6 +1,7 @@
 package pl.endproject.offerscomparator.infrastructure.userRegistration.service;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.configuration.MailTrapProperties;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.dao.UserDao;
@@ -17,7 +18,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private User user;
-    private Session switchMailSource= MailTrapProperties.config();
+    private Session switchMailSource = MailTrapProperties.config();
+
+    public void setSwitchMailSource(Session switchMailSource) {
+        this.switchMailSource = switchMailSource;
+    }
+
 
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
@@ -26,6 +32,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserValid(String login, String email, String password) {
+//        String login;
+//        String email;
         this.user = userDao.findUserByLoginOrEmail(login, email);
 
         return user != null && PasswordUtil.checkPassword(password, user.getPassword()) && user.getActive();
@@ -34,14 +42,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean registerUser(String login, String email, String password, String path) {
 
-        int tokenLength = 50;
-        String token = RandomStringUtils.randomAlphanumeric(tokenLength);
-        if(userDao.findUserByLoginOrEmail(login,email)!=null){
-        userDao.save(new User(login,PasswordUtil.hashPassword(password),email,token));
-        EmailUtil.sendActivationEmail(login, token, path,switchMailSource);
-            return true;
+        String token = uniqueTokenGenerator();
+        try {
+            if (userDao.findUserByLoginOrEmail(login, email) == null) {
+                userDao.save(new User(login, PasswordUtil.hashPassword(password), email, token));
+                EmailUtil.sendActivationEmail(login, token, path, switchMailSource);
+                return true;
+            }
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return false;
         }
         return false;
+    }
+
+    private String uniqueTokenGenerator() {
+        int tokenLength = 50;
+        String uniqueToken;
+        do {
+            uniqueToken = RandomStringUtils.randomAlphanumeric(tokenLength);
+        } while (userDao.findUserByToken(uniqueToken) != null);
+        return uniqueToken;
     }
 
     @Override
@@ -57,14 +77,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long getUserId(String loginOrEmail) {
-        return userDao.findUserByLoginOrEmail(loginOrEmail,loginOrEmail).getUser_id();
+        return userDao.findUserByLoginOrEmail(loginOrEmail, loginOrEmail).getUser_id();
     }
 
 
     public List<User> getUserList() {
         return userDao.findAll();
     }
-
 
 
     public Optional<User> findById(long id) {

@@ -23,8 +23,8 @@ public class PasswordUtilTest {
     @Test
     public void shouldReturnTrueWhenSamePasswordIsVerified() {
         //given
-        String password_plaintext="Nowak";
-        String hashPassword = "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri";
+        String password_plaintext="Jan";
+        String hashPassword = "$2a$12$.mmDJgNVKpog5tA9NgLYSOgEafJ7Bv83rtkK7BI/vh4tdyvObGmH2";
         //when
         Boolean actual = PasswordUtil.checkPassword(password_plaintext,hashPassword);
         //then

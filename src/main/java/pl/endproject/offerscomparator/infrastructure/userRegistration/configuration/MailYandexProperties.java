@@ -5,8 +5,8 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.util.Properties;
 
-public class YandexMailProperties {
-    private YandexMailProperties() {
+public class MailYandexProperties {
+    private MailYandexProperties() {
     }
 
     public static Session config(){
@@ -16,6 +16,7 @@ public class YandexMailProperties {
         prop.put("mail.smtp.host", "smtp.yandex.com");
         prop.put("mail.smtp.port", "465");
         prop.put("mail.smtp.ssl.trust", "smtp.yandex.com");
+        prop.put("mail.smtp.ssl.enable", "true");
 
         return Session.getInstance(prop, new Authenticator() {
             @Override
