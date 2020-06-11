@@ -264,7 +264,7 @@
                     <h2><b>Searching Results</b></h2>
                 </div>
                 <div class="col-sm-7">
-                    <a href="#" class="btn btn-primary"><i class="material-icons">&#xe90d;</i> <span>Print to PDF</span></a>
+                    <a href="/printPdf" class="btn btn-primary"><i class="material-icons">&#xe90d;</i> <span>Print to PDF</span></a>
                     <a href="#" class="btn btn-primary"><i class="material-icons">&#xE24D;</i>
                         <span>Export to Excel</span></a>
                 </div>
@@ -287,7 +287,7 @@
             <tr th:each="product,itemStat: *{products}">
                 <td th:text="${itemStat.index + 1}"></td>
                 <td><img class="my-image" th:src="@{${product.imageUrl}}"/></td>
-                <td><a th:text="${product.name}" th:href="@{${product.url}}"></a></td>
+                <td><a th:text="${product.name}" th:href="@{${product.url}}" ></a></td>
                 <div th:switch="${product.price}">
                     <td th:case="null">Not given</td>
                     <td th:case="*" th:text="${product.price} + ' zł'"></td>
