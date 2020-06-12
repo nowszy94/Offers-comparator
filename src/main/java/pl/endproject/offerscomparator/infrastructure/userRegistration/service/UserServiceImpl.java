@@ -3,7 +3,7 @@ package pl.endproject.offerscomparator.infrastructure.userRegistration.service;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
-import pl.endproject.offerscomparator.infrastructure.userRegistration.configuration.MailTrapProperties;
+import pl.endproject.offerscomparator.infrastructure.userRegistration.configuration.MailYandexProperties;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.dao.UserDao;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.model.User;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.util.EmailUtil;
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private User user;
-    private Session switchMailSource = MailTrapProperties.config();
+    private Session switchMailSource = MailYandexProperties.config();
     private String failureCause;
 
     public String getFailureCause() {

@@ -23,7 +23,8 @@ public final class EmailUtil {
                     "\n" +
                     "Please verify your email address by clicking the button below.<br>\n";
 
-            String link = "<a href=\"http://localhost:8080" + contextPath + "/login?token=" + token + "\">Activate your account</a>";
+//            String link = "<a href=\"http://localhost:8080" + contextPath + "?token=" + token + "\">Activate your account</a>";
+            String link = "<a href=\"" + contextPath + "?token=" + token + "\">Activate your account</a>";
 
             String bottomText = "<br>If you didn't request this, please ignore this email.\n" +
                     "<br><br>Yours, Offers Comparator Team";

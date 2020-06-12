@@ -12,7 +12,7 @@ public class EmailUtilTest {
         //given
         String email="test@test.com";
         String token="testToken";
-        String contextPath="/testPath";
+        String contextPath="http://localhost:8080/signup";
         Session mailProperties = MailTrapProperties.config();
         //when
         EmailUtil.sendActivationEmail(email,token,contextPath, mailProperties);

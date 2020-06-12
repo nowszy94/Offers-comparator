@@ -17,13 +17,15 @@
     <h2 class="mb-5">Create your account</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/signup}" method="post">
+
+            <form th:action="@{/signup}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="login" class="col-form-label">Login</label>
                         <input type="text" class="form-control" id="login" placeholder="Login"
                                pattern="^[a-zA-Z0-9_.-]{3,}$"
                                title="Couldn't contain illegal characters and at least 3 or more characters"
+                               th:name="login"
                                required>
                     </div>
                     <div class="form-group col-md-6">
@@ -31,6 +33,7 @@
                         <input type="text" class="form-control" id="email" placeholder="Email"
                                pattern="^[a-zA-Z0-9_@.-]{3,}$"
                                title="Couldn't contain illegal characters and at least 3 or more characters"
+                               th:name="email"
                                required>
                     </div>
                 </div>
@@ -40,6 +43,7 @@
                         <input type="password" class="form-control" id="password" placeholder="Password"
                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                               th:name="password"
                                required>
                         <input type="checkbox" onclick="show_password()" class="checkmark"> Show Password
                     </div>
@@ -62,6 +66,12 @@
                     </div>
                 </div>
             </form>
+            <div th:switch="${failure}" >
+                <p th:case="'loginExistInDB'" class="alert alert-danger" role="alert">Invalid login. This login already exists.</p>
+                <p th:case="'emailExistInDB'" class="alert alert-danger" role="alert">Invalid email address. This email addres salready exists.</p>
+                <p th:case="'illegalCharactersUsed'" class="alert alert-danger" role="alert">Illegal characters used.</p>
+                <p th:case="'loginAndEmailExistInDB'" class="alert alert-danger" role="alert">Invalid login and email. This login and email address already exists.</p>
+            </div>
         </div>
     </div>
 </div>

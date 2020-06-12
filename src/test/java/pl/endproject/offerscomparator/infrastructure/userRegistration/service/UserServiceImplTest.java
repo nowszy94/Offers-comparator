@@ -49,15 +49,15 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void registerUser() {
-        String login = "Anna";
+    public void shouldNotRegisterUserWhileInvalidParametersAreGiven() {
+        String login = "marta";
         String email = "j@test.pl";
         String password = "testPassword";
-        String path = "/randomPath";
+        String path = "http://localhost:8080/signup";
 
         //then
         for (TestCase singleTest : testCasesRegistrationFailed()) {
-            userService.registerUser(singleTest.login, singleTest.email, "randomPassword", "/randomPath");
+            userService.registerUser(singleTest.login, singleTest.email, "randomPassword", path);
             assertThat(userService.getFailureCause()).isEqualTo(singleTest.registrationStatus);
         }
     }
