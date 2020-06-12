@@ -81,6 +81,21 @@ public class UserDaoH2Test {
         userDao.findUserByLoginOrEmail(login, email);
     }
 
+    @Test
+    public void shouldFindUserByLoginWhenLoginIsGiven() {
+        //given
+        String loginExistInDB = "anna";
+        String loginDoesNotExistInDB = "Anna";
+
+        //when
+        Boolean success = userDao.existsByLogin(loginExistInDB);
+        Boolean failure = userDao.existsByLogin(loginDoesNotExistInDB);
+
+        //then
+        assertThat(success).isTrue();
+        assertThat(failure).isFalse();
+    }
+
 
     @Test
     public void shouldFindUserByTokenAfterTokenParameterIsGiven() {

@@ -38,7 +38,10 @@ public class UserDaoMySqlTest {
         assertThat(userDao.findUserByLoginOrEmail("NewTestUser",null).getLogin()).isEqualTo("NewTestUser");
     }
 
-    /*When @SpringBootTest is used, change the parameter. Running the test will permanently remove the element from the database.*/
+    /**
+     * When @SpringBootTest is used, change the parameter.
+     * Running the test will permanently remove the element from the database.
+     * */
     @Test
     public void remove() {
         //given

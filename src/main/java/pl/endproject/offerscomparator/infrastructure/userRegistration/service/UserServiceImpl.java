@@ -8,6 +8,7 @@ import pl.endproject.offerscomparator.infrastructure.userRegistration.dao.UserDa
 import pl.endproject.offerscomparator.infrastructure.userRegistration.model.User;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.util.EmailUtil;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.util.PasswordUtil;
+import pl.endproject.offerscomparator.infrastructure.userRegistration.util.TextValidator;
 
 import javax.mail.Session;
 import java.util.List;
@@ -19,6 +20,15 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private User user;
     private Session switchMailSource = MailTrapProperties.config();
+    private String failureCause;
+
+    public String getFailureCause() {
+        return failureCause;
+    }
+
+    public void setFailureCause(String failureCause) {
+        this.failureCause = failureCause;
+    }
 
     public void setSwitchMailSource(Session switchMailSource) {
         this.switchMailSource = switchMailSource;
@@ -32,27 +42,48 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserValid(String login, String email, String password) {
-//        String login;
-//        String email;
-        this.user = userDao.findUserByLoginOrEmail(login, email);
+        this.user = userDao.findUserByLoginOrEmail(toLowerCase(login), toLowerCase(email));
 
         return user != null && PasswordUtil.checkPassword(password, user.getPassword()) && user.getActive();
     }
 
+    private static String toLowerCase(String text) {
+        try {
+            return text.toLowerCase();
+        } catch (NullPointerException e) {
+            return text;
+        }
+    }
+
     @Override
     public boolean registerUser(String login, String email, String password, String path) {
-
         String token = uniqueTokenGenerator();
+        String newLogin = toLowerCase(login);
+        String newEmail = toLowerCase(email);
+        TextValidator textValidator = new TextValidator();
+
         try {
-            if (userDao.findUserByLoginOrEmail(login, email) == null) {
-                userDao.save(new User(login, PasswordUtil.hashPassword(password), email, token));
-                EmailUtil.sendActivationEmail(login, token, path, switchMailSource);
-                return true;
+            if (textValidator.loginValidate(newLogin) & textValidator.emailValidate(newEmail)) {
+                if (userDao.findUserByLoginOrEmail(newLogin, newEmail) == null) {
+                    userDao.save(new User(newLogin, PasswordUtil.hashPassword(password), newEmail, token));
+                    EmailUtil.sendActivationEmail(newEmail, token, path, switchMailSource);
+                    return true;
+                } else {
+                    if (userDao.existsByLogin(toLowerCase(login))) {
+                        setFailureCause("loginExistInDB");
+                    } else {
+                        setFailureCause("emailExistInDB");
+                    }
+                    return false;
+                }
             }
+            setFailureCause("illegalCharactersUsed");
+            return false;
+
         } catch (IncorrectResultSizeDataAccessException e) {
+            setFailureCause("loginAndEmailExistInDB");
             return false;
         }
-        return false;
     }
 
     private String uniqueTokenGenerator() {
@@ -67,12 +98,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean activateUser(String token) {
         this.user = userDao.findUserByToken(token);
-        if (user != null) {
-            user.setActive(true);
-            userDao.save(user);
-            return true;
+        try {
+            if (!user.getActive()) {
+                user.setActive(true);
+                userDao.save(user);
+                return true;
+            }
+            return false;
+        }catch (NullPointerException e){
+            return false;
         }
-        return false;
     }
 
     @Override

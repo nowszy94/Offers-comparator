@@ -3,7 +3,7 @@ package pl.endproject.offerscomparator.infrastructure.userRegistration.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TextValidator {
+public final class TextValidator {
     private Pattern loginPattern;
     private Pattern emailPattern;
     private Matcher matcher;

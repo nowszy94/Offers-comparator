@@ -1,5 +1,6 @@
 package pl.endproject.offerscomparator.infrastructure.userRegistration.service;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pl.endproject.offerscomparator.OffersComparatorApplication;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.config.H2TestProfileJPAConfig;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.configuration.MailTrapProperties;
+import pl.endproject.offerscomparator.infrastructure.userRegistration.configuration.MailYandexProperties;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,11 +35,16 @@ public class UserServiceImplTest {
         userService.setSwitchMailSource(MailTrapProperties.config());
     }
 
+    @After
+    public void tearDown() {
+        userService.setSwitchMailSource(MailYandexProperties.config());
+    }
+
     @Test
     public void isUserValid() {
-                //then
+        //then
         for (TestCase singleTest : testCasesSelectedParametersAreCovered()) {
-            assertThat(userService.isUserValid(singleTest.login,singleTest.email,singleTest.password1)).isEqualTo(singleTest.result);
+            assertThat(userService.isUserValid(singleTest.login, singleTest.email, singleTest.password1)).isEqualTo(singleTest.result);
         }
     }
 
@@ -45,15 +52,30 @@ public class UserServiceImplTest {
     public void registerUser() {
         String login = "Anna";
         String email = "j@test.pl";
-        String password="testPassword";
-        String path="/randomPath";
+        String password = "testPassword";
+        String path = "/randomPath";
 
-        Boolean actual = userService.registerUser(login,email,password,path);
-        assertThat(actual).isTrue();
+        //then
+        for (TestCase singleTest : testCasesRegistrationFailed()) {
+            userService.registerUser(singleTest.login, singleTest.email, "randomPassword", "/randomPath");
+            assertThat(userService.getFailureCause()).isEqualTo(singleTest.registrationStatus);
+        }
     }
 
     @Test
     public void activateUser() {
+        //given
+        String success = "testtokentesttokentesttoken1";
+        String failed = "testtokentesttokentesttoken2";
+
+        //when
+        Boolean actualFirst = userService.activateUser(success);
+        Boolean actualSecond = userService.activateUser(failed);
+
+        //then
+        assertThat(actualFirst).isTrue();
+        assertThat(actualSecond).isFalse();
+        assertThat(userService.findById(1).get().getActive()).isTrue();
     }
 
     @Test
@@ -74,28 +96,29 @@ public class UserServiceImplTest {
 
     private List<TestCase> testCasesSelectedParametersAreCovered() {
         return Arrays.asList(
-                new TestCase("Marek", "Jan",null,true),
-                new TestCase("Marek", "Nowak","mj@test.pl",false),
-                new TestCase(null, "Jan","mj@test.pl",true),
-                new TestCase("Marek", "Jan","mj@test.pl",true),
-                new TestCase("Marek", "Jan","Marek",true),
-                new TestCase("mj@test.pl", "Jan","mj@test.pl",true),
-                new TestCase("Marek", "Jan",null,true),
-                new TestCase(null, "Jan",null,false),
-                new TestCase("Jan", "Jan",null,false),
-                new TestCase(null, "Janek","mj@test.pl",false)
+                new TestCase("Marek", "Jan", null, true),
+                new TestCase("Marek", "Nowak", "mj@test.pl", false),
+                new TestCase(null, "Jan", "Mj@test.pl", true),
+                new TestCase("Marek", "Jan", "mj@test.pl", true),
+                new TestCase("Marek", "Jan", "Marek", true),
+                new TestCase("mj@test.pl", "Jan", "mj@test.pl", true),
+                new TestCase("Marek", "Jan", null, true),
+                new TestCase(null, "Jan", null, false),
+                new TestCase("Jan", "Jan", null, false),
+                new TestCase("M arek", "Jan", null, false),
+                new TestCase(null, "Janek", "mj@test.pl", false)
         );
     }
 
     private List<TestCase> testCasesRegistrationFailed() {
         return Arrays.asList(
-                new TestCase("Marek", "mj@test.pl","userExistInDB"),
-                new TestCase("Marek", "difmj@test.pl","loginExistInDB"),
-                new TestCase("RandomName", "mj@test.pl","emailExistInDB"),
-                new TestCase("Anna", "mj@test.pl","loginAndEmailExistInDB"),
-                new TestCase("Marek", "difmj@test.pl","loginExistInDB"),
-                new TestCase("Mar ek", "difmj@test.pl","loginContain")
-
+                new TestCase("Marek", "mj@test.pl", "loginExistInDB"),
+                new TestCase("Marek", "difmj@test.pl", "loginExistInDB"),
+                new TestCase("RandomName", "mj@test.pl", "emailExistInDB"),
+                new TestCase("Anna", "mj@test.pl", "loginAndEmailExistInDB"),
+                new TestCase("Marek", "difm!j@test.pl", "illegalCharactersUsed"),
+                new TestCase("Mar ek", "difmj@test.pl", "illegalCharactersUsed"),
+                new TestCase("", "", "illegalCharactersUsed")
         );
     }
 
@@ -109,11 +132,11 @@ public class UserServiceImplTest {
         private String registrationStatus;
 
 
-        public TestCase(String login, String password1, String email,Boolean result) {
+        public TestCase(String login, String password1, String email, Boolean result) {
             this.login = login;
             this.password1 = password1;
             this.email = email;
-            this.result=result;
+            this.result = result;
         }
 
         public TestCase(String login, String email, String registrationStatus) {

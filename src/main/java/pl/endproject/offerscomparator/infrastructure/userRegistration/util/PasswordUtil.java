@@ -9,7 +9,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * jBCrypt: http://www.mindrot.org/projects/jBCrypt/
  */
 
-public class PasswordUtil {
+public final class PasswordUtil {
 
     public static String hashPassword(String password_plaintext) {
 

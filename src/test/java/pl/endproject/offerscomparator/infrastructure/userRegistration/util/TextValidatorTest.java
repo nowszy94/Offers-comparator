@@ -24,7 +24,7 @@ public class TextValidatorTest {
     @Test
     public void shouldValidateUserEmailBeforeAddUserToDB() {
         //then
-                for (TestCase caseElement : testCases()
+        for (TestCase caseElement : testCases()
         ) {
             Assert.assertEquals(caseElement.emailResult, textValidator.emailValidate(caseElement.plainText));
         }
@@ -50,6 +50,10 @@ public class TextValidatorTest {
                 new TestCase("test@", false,false),
                 new TestCase("test@ssf.com", false,true),
                 new TestCase("test@ss f.com", false,false),
+                new TestCase("@om", false,false),
+                new TestCase("@m", false,false),
+                new TestCase("bm", false,false),
+                new TestCase("bsm", true,false),
                 new TestCase("test@ssf.com?", false,false));
     }
 
