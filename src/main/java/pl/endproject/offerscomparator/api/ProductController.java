@@ -25,18 +25,19 @@ import java.util.List;
 @SessionAttributes({"userSearch"})
 public class ProductController {
 
+    //TODO: downloads pdf but after first request every other pdf is the same as first one.....
     private ProductService productService;
     private final ReaderConfig readerConfig;
-    private final PdfService pdfService;
     @Autowired
     private ServletContext servletContext;
+    @Autowired
+    private PdfService pdfService;
 
 
-    public ProductController(ProductService productService, ReaderConfig readerConfig, PdfService pdfService) {
+    public ProductController(ProductService productService, ReaderConfig readerConfig) {
         this.productService = productService;
         this.readerConfig = readerConfig;
 
-        this.pdfService = pdfService;
     }
 
     @GetMapping("/offers")
