@@ -17,18 +17,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.net.http.HttpRequest;
+
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"userSearch"})
 public class ProductController {
 
-    //TODO: downloads pdf but after first request every other pdf is the same as first one.....
+
     private ProductService productService;
     private final ReaderConfig readerConfig;
+    private List<Product> products;
     @Autowired
     private ServletContext servletContext;
     @Autowired
@@ -42,18 +42,14 @@ public class ProductController {
     }
 
     @GetMapping("/offers")
-    public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch,
-                            HttpServletRequest request) {
+    public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch) {
         if (!userSearch.isBlank()) {
-            List<Product> products = productService.findForPhrase(userSearch);
+            products = productService.findForPhrase(userSearch);
             if (products.isEmpty()) {
                 return "no-results";
             }
             model.addAttribute("products", products);
-            String userSearch1 = (String)request.getSession().getAttribute("userSearch");
-
         }
-
         return "getAll";
     }
 
@@ -67,7 +63,7 @@ public class ProductController {
 
     @RequestMapping(value = "/suggestion", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SuggestionsWrapper autocompleteSuggestions(@RequestParam("userSearch") String userSearch) throws IOException {
+    public SuggestionsWrapper autocompleteSuggestions(@RequestParam("userSearch") String userSearch) {
         ArrayList<Phrase> suggestions = new ArrayList<>();
         SuggestionsWrapper sw = new SuggestionsWrapper();
         Reader reader = readerConfig.readerFromFile();
@@ -82,27 +78,28 @@ public class ProductController {
     }
 
     @PostMapping("/getPdf")
-    public String downloadFile(@RequestParam  String userSearch,  HttpServletRequest request, HttpServletResponse response){
-        List<Product> products = productService.findForPhrase(userSearch);
+    public String downloadFile(@RequestParam String userSearch, HttpServletRequest request, HttpServletResponse response) {
         pdfService.createPdf(products, servletContext, request, response);
-        getPdfFile(request,response);
+        String fullPath = request.getServletContext().getRealPath("/resources/templates/getAll" + ".pdf");
+        fileDownload(fullPath, response, "oferty-pl.pdf");
+//        getPdfFile(request, response);
 
         return "redirect:/offers?userSearch=" + userSearch;
 
     }
 
 
-//    @RequestMapping("/printPdf")
+    //    @RequestMapping("/printPdf")
 //    @ResponseBody
-    public void getPdfFile(HttpServletRequest request, HttpServletResponse response) {
-//        String us = (String) request.getSession().getAttribute("userSearch");
-
-//        List<Product> products = productService.findForPhrase(us);
-//        pdfService.createPdf(products, servletContext, request, response);
-
-        String fullPath = request.getServletContext().getRealPath("/resources/templates/getAll" + ".pdf");
-        fileDownload(fullPath, response, "oferty-pl.pdf");
-    }
+//    public void getPdfFile(HttpServletRequest request, HttpServletResponse response) {
+////        String us = (String) request.getSession().getAttribute("userSearch");
+//
+////        List<Product> products = productService.findForPhrase(us);
+////        pdfService.createPdf(products, servletContext, request, response);
+//
+//        String fullPath = request.getServletContext().getRealPath("/resources/templates/getAll" + ".pdf");
+//        fileDownload(fullPath, response, "oferty-pl.pdf");
+//    }
 
     private void fileDownload(String fullPath, HttpServletResponse response, String fileName) {
         File file = new File(fullPath);
