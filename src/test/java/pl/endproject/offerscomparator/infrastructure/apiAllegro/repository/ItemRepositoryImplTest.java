@@ -54,6 +54,19 @@ public class ItemRepositoryImplTest {
     }
 
     @Test
+    void shouldGetListOfAllegroItemsWhenPhraseIsGivenWithoutCharsetEncodingBefore() {
+
+        //given
+        String title = "półka";
+        //when
+        listOfAllegroItems = itemRepository.findByPhrase(title);
+
+        //then
+        assertThat(listOfAllegroItems.size(), is(greaterThan(0)));
+        System.out.println(listOfAllegroItems);
+    }
+
+    @Test
     void shouldGetItemTitleWhenPhraseIsGiven() {
 
         //given

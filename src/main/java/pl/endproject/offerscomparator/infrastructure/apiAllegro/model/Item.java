@@ -18,3 +18,4 @@ public class Item {
     private String address;
     private String condition;
 }
+
