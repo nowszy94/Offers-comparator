@@ -17,7 +17,5 @@ public class Item {
     private String imageUrl;
     private String address;
     private String condition;
-
 }
-
 

@@ -8,8 +8,8 @@ public final class TextValidator {
     private Pattern emailPattern;
     private Matcher matcher;
 
-    private static final String loginRegex = "^[a-z0-9_.-]{3,15}$";
-    private static final String emailRegex = "^[a-z0-9_@.-]{3,250}$";
+    private static final String loginRegex = "^[a-z0-9_.-]{3,}$";
+    private static final String emailRegex = "^[a-z0-9_@.-]{3,}$";
 
     public TextValidator() {
         loginPattern = Pattern.compile(loginRegex);

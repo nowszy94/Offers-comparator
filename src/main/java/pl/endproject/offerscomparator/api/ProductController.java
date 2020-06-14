@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.endproject.offerscomparator.domain.Product;
 import pl.endproject.offerscomparator.domain.ProductService;
-import pl.endproject.offerscomparator.infrastructure.userRegistration.service.UserServiceImpl;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class ProductController {
     private ProductService productService;
 
 
-    public ProductController(ProductService productService, UserServiceImpl userService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
 
     }

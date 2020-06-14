@@ -28,6 +28,8 @@ CREATE TABLE logger(
 );
 
 
+/*
+todo problems with remotemysql service
 delimiter $$
 CREATE
     TRIGGER  user_add_trg
@@ -92,6 +94,6 @@ CREATE PROCEDURE logger_capacity_limit ()
         DELETE FROM logger WHERE `date`<=(CURRENT_DATE()- INTERVAL 1 YEAR);
         END IF;
     END$$
-delimiter ;
+delimiter ;*/
 
 

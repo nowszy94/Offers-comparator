@@ -98,16 +98,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean activateUser(String token) {
         this.user = userDao.findUserByToken(token);
-        try {
-            if (!user.getActive()) {
+        if (user != null && !user.getActive()) {
+
                 user.setActive(true);
                 userDao.save(user);
                 return true;
             }
-            return false;
-        }catch (NullPointerException e){
-            return false;
-        }
+        return false;
     }
 
     @Override
