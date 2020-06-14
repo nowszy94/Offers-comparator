@@ -42,48 +42,51 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserValid(String login, String email, String password) {
-        this.user = userDao.findUserByLoginOrEmail(toLowerCase(login), toLowerCase(email));
-
-        return user != null && PasswordUtil.checkPassword(password, user.getPassword()) && user.getActive();
-    }
-
-    private static String toLowerCase(String text) {
-        try {
-            return text.toLowerCase();
-        } catch (NullPointerException e) {
-            return text;
+        if (checkIfEmailAndLoginAreNotNull(login, email)) {
+            this.user = userDao.findUserByLoginOrEmail(login.toLowerCase(), email.toLowerCase());
+            return user != null && PasswordUtil.checkPassword(password, user.getPassword()) && user.getActive();
         }
+        return false;
     }
+
+    private boolean checkIfEmailAndLoginAreNotNull(String login, String email) {
+        return login != null && email != null;
+    }
+
 
     @Override
     public boolean registerUser(String login, String email, String password, String path) {
-        String token = uniqueTokenGenerator();
-        String newLogin = toLowerCase(login);
-        String newEmail = toLowerCase(email);
-        TextValidator textValidator = new TextValidator();
+        if (checkIfEmailAndLoginAreNotNull(login, email)) {
+            String token = uniqueTokenGenerator();
+            String newLogin = login.toLowerCase();
+            String newEmail = email.toLowerCase();
+            TextValidator textValidator = new TextValidator();
 
-        try {
-            if (textValidator.loginValidate(newLogin) & textValidator.emailValidate(newEmail)) {
-                if (userDao.findUserByLoginOrEmail(newLogin, newEmail) == null) {
-                    userDao.save(new User(newLogin, PasswordUtil.hashPassword(password), newEmail, token));
-                    EmailUtil.sendActivationEmail(newEmail, token, path, switchMailSource);
-                    return true;
-                } else {
-                    if (userDao.existsByLogin(toLowerCase(login))) {
-                        setFailureCause("loginExistInDB");
+            try {
+                if (textValidator.loginValidate(newLogin) & textValidator.emailValidate(newEmail)) {
+                    if (userDao.findUserByLoginOrEmail(newLogin, newEmail) == null) {
+                        userDao.save(new User(newLogin, PasswordUtil.hashPassword(password), newEmail, token));
+                        EmailUtil.sendActivationEmail(newEmail, token, path, switchMailSource);
+                        return true;
                     } else {
-                        setFailureCause("emailExistInDB");
+                        if (userDao.existsByLogin(newLogin)) {
+                            setFailureCause("loginExistInDB");
+                        } else {
+                            setFailureCause("emailExistInDB");
+                        }
+                        return false;
                     }
-                    return false;
                 }
-            }
-            setFailureCause("illegalCharactersUsed");
-            return false;
+                setFailureCause("illegalCharactersUsed");
+                return false;
 
-        } catch (IncorrectResultSizeDataAccessException e) {
-            setFailureCause("loginAndEmailExistInDB");
-            return false;
+            } catch (IncorrectResultSizeDataAccessException e) {
+                setFailureCause("loginAndEmailExistInDB");
+                return false;
+            }
         }
+        return false;
+
     }
 
     private String uniqueTokenGenerator() {
@@ -100,10 +103,10 @@ public class UserServiceImpl implements UserService {
         this.user = userDao.findUserByToken(token);
         if (user != null && !user.getActive()) {
 
-                user.setActive(true);
-                userDao.save(user);
-                return true;
-            }
+            user.setActive(true);
+            userDao.save(user);
+            return true;
+        }
         return false;
     }
 

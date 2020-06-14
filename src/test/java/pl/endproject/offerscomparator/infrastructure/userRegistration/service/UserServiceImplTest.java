@@ -96,16 +96,17 @@ public class UserServiceImplTest {
 
     private List<TestCase> testCasesSelectedParametersAreCovered() {
         return Arrays.asList(
-                new TestCase("Marek", "Jan", null, true),
+                new TestCase("Marek", "Jan", "Marek", true),
                 new TestCase("Marek", "Nowak", "mj@test.pl", false),
-                new TestCase(null, "Jan", "Mj@test.pl", true),
+                new TestCase(null, "Jan", null, false),
                 new TestCase("Marek", "Jan", "mj@test.pl", true),
                 new TestCase("Marek", "Jan", "Marek", true),
                 new TestCase("mj@test.pl", "Jan", "mj@test.pl", true),
-                new TestCase("Marek", "Jan", null, true),
+                new TestCase("Marek", "Jan", null, false),
                 new TestCase(null, "Jan", null, false),
                 new TestCase("Jan", "Jan", null, false),
                 new TestCase("M arek", "Jan", null, false),
+                new TestCase("", "Jan", "", false),
                 new TestCase(null, "Janek", "mj@test.pl", false)
         );
     }
@@ -127,7 +128,6 @@ public class UserServiceImplTest {
         private String login;
         private String password1;
         private String email;
-        private String password2;
         private Boolean result;
         private String registrationStatus;
 
