@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,15 +50,17 @@ public class ProductController {
                 return "no-results";
             }
             model.addAttribute("products", products);
-            request.getSession().setAttribute("userSearch", userSearch);
+            String userSearch1 = (String)request.getSession().getAttribute("userSearch");
 
         }
+
         return "getAll";
     }
 
     @PostMapping("/findProducts")
-    public String findOffers(@RequestParam String userSearch) throws UnsupportedEncodingException {
+    public String findOffers(@RequestParam String userSearch, HttpServletRequest request) throws UnsupportedEncodingException {
         String encodedUserSearch = URLEncoder.encode(userSearch, StandardCharsets.UTF_8.toString());
+
         return "redirect:/offers?userSearch=" + encodedUserSearch;
     }
 
@@ -78,13 +81,24 @@ public class ProductController {
         return sw;
     }
 
-
-    @RequestMapping("/printPdf")
-    @ResponseBody
-    public void getPdfFile(HttpServletRequest request, HttpServletResponse response) {
-        String us = (String) request.getSession().getAttribute("userSearch");
-        List<Product> products = productService.findForPhrase(us);
+    @PostMapping("/getPdf")
+    public String downloadFile(@RequestParam  String userSearch,  HttpServletRequest request, HttpServletResponse response){
+        List<Product> products = productService.findForPhrase(userSearch);
         pdfService.createPdf(products, servletContext, request, response);
+        getPdfFile(request,response);
+
+        return "redirect:/offers?userSearch=" + userSearch;
+
+    }
+
+
+//    @RequestMapping("/printPdf")
+//    @ResponseBody
+    public void getPdfFile(HttpServletRequest request, HttpServletResponse response) {
+//        String us = (String) request.getSession().getAttribute("userSearch");
+
+//        List<Product> products = productService.findForPhrase(us);
+//        pdfService.createPdf(products, servletContext, request, response);
 
         String fullPath = request.getServletContext().getRealPath("/resources/templates/getAll" + ".pdf");
         fileDownload(fullPath, response, "oferty-pl.pdf");
