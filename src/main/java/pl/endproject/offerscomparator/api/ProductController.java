@@ -1,6 +1,6 @@
 package pl.endproject.offerscomparator.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +10,9 @@ import pl.endproject.offerscomparator.infrastructure.autocompleteFeature.Phrase;
 import pl.endproject.offerscomparator.infrastructure.autocompleteFeature.Reader;
 import pl.endproject.offerscomparator.infrastructure.autocompleteFeature.ReaderConfig;
 import pl.endproject.offerscomparator.infrastructure.autocompleteFeature.SuggestionsWrapper;
-import pl.endproject.offerscomparator.infrastructure.printPDFeature.PdfService;
 
-import javax.servlet.ServletContext;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 
@@ -27,16 +25,14 @@ public class ProductController {
     private ProductService productService;
     private final ReaderConfig readerConfig;
     private List<Product> products;
-    @Autowired
-    private ServletContext servletContext;
-    @Autowired
-    private PdfService pdfService;
-
 
     public ProductController(ProductService productService, ReaderConfig readerConfig) {
         this.productService = productService;
         this.readerConfig = readerConfig;
+    }
 
+    public List<Product> getProducts() {
+        return products;
     }
 
     @GetMapping("/offers")
@@ -73,40 +69,5 @@ public class ProductController {
             sw.setSuggestions(suggestions);
         }
         return sw;
-    }
-
-
-    @RequestMapping("/printPdf")
-    @ResponseBody
-    public void getPdfFile(HttpServletRequest request, HttpServletResponse response) {
-        pdfService.createPdf(products, servletContext, request, response);
-        String fullPath = request.getServletContext().getRealPath("/resources/templates/getAll" + ".pdf");
-        fileDownload(fullPath, response, "oferty.pdf");
-    }
-
-    private void fileDownload(String fullPath, HttpServletResponse response, String fileName) {
-        File file = new File(fullPath);
-        final int BUFFER_SIZE = 4096;
-        if (file.exists()) {
-            try {
-                FileInputStream fis = new FileInputStream(file);
-                String mimeType = servletContext.getMimeType(fullPath);
-                response.setContentType(mimeType);
-                response.setHeader("content-disposition", "attachment; filename=" + fileName);
-                OutputStream os = response.getOutputStream();
-                byte[] buffer = new byte[BUFFER_SIZE];
-                int bytesRead = -1;
-                while ((bytesRead = fis.read(buffer)) != -1) {
-                    os.write(buffer, 0, bytesRead);
-                }
-                fis.close();
-                os.close();
-                file.delete();
-
-
-            } catch (Exception e) {
-                e.getMessage();
-            }
-        }
     }
 }

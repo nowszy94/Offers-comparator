@@ -1,5 +1,6 @@
 package pl.endproject.offerscomparator.infrastructure.printPDFeature;
 
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -13,10 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import java.io.IOException;
+
 import java.util.List;
 
 @Service
 public class PdfService {
+
 
 
     public boolean createPdf(List<Product> products, ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) {
@@ -31,9 +35,9 @@ public class PdfService {
             PdfWriter.getInstance(document, new FileOutputStream(file + "/" + "getAll" + ".pdf"));
             document.open();
 
-            Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+            Font font = FontFactory.getFont(FontFactory.TIMES_BOLD, 16, BaseColor.BLACK);
 
-            Paragraph paragraph = new Paragraph("All products", font);
+            Paragraph paragraph = new Paragraph("Wyniki wyszukiwania", font);
             paragraph.setAlignment(Element.ALIGN_CENTER);
             paragraph.setIndentationLeft(50);
             paragraph.setIndentationRight(50);
@@ -42,54 +46,66 @@ public class PdfService {
 
             PdfPTable pdfPTable = new PdfPTable(4);
             pdfPTable.setWidthPercentage(100);
-            pdfPTable.setSpacingBefore(10);
-            pdfPTable.setSpacingAfter(10);
-            Font tableHeader = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, BaseColor.BLACK);
-            Font tableBody = FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK);
+            pdfPTable.setSpacingBefore(5);
+            pdfPTable.setSpacingAfter(5);
 
-            float[] columnWidths = {2f, 2f, 2f, 2f};
+
+            float[] columnWidths = {2f, 2f, 2f, 2f}; //2f
             pdfPTable.setWidths(columnWidths);
 
 
-            /*CELLS CREATING*/
-            /*TITLES*/
-            PdfPCell title = new PdfPCell(new Phrase("Title"));
+//            PdfPCell image = new PdfPCell(new Phrase("Foto"));
+//            image.setBorderColor(BaseColor.BLACK);
+//            image.setPaddingLeft(10);
+//            image.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            image.setVerticalAlignment(Element.ALIGN_CENTER);
+//            image.setBackgroundColor(BaseColor.LIGHT_GRAY);
+//            pdfPTable.addCell(image);
+
+            PdfPCell title = new PdfPCell(new Phrase("Nazwa"));
             title.setBorderColor(BaseColor.BLACK);
             title.setPaddingLeft(10);
             title.setHorizontalAlignment(Element.ALIGN_CENTER);
             title.setVerticalAlignment(Element.ALIGN_CENTER);
-            title.setBackgroundColor(BaseColor.GRAY);
-
+            title.setBackgroundColor(BaseColor.LIGHT_GRAY);
             pdfPTable.addCell(title);
-            /*Prices*/
-            PdfPCell price = new PdfPCell(new Phrase("Price"));
+
+
+            PdfPCell price = new PdfPCell(new Phrase("Cena"));
             price.setBorderColor(BaseColor.BLACK);
             price.setPaddingLeft(10);
             price.setHorizontalAlignment(Element.ALIGN_CENTER);
             price.setVerticalAlignment(Element.ALIGN_CENTER);
-            price.setBackgroundColor(BaseColor.GRAY);
-
+            price.setBackgroundColor(BaseColor.LIGHT_GRAY);
             pdfPTable.addCell(price);
-            /*Sources*/
-            PdfPCell source = new PdfPCell(new Phrase("Source"));
+
+
+            PdfPCell source = new PdfPCell(new Phrase("Sklep"));
             source.setBorderColor(BaseColor.BLACK);
             source.setPaddingLeft(10);
             source.setHorizontalAlignment(Element.ALIGN_CENTER);
             source.setVerticalAlignment(Element.ALIGN_CENTER);
-            source.setBackgroundColor(BaseColor.GRAY);
-
+            source.setBackgroundColor(BaseColor.LIGHT_GRAY);
             pdfPTable.addCell(source);
-            /*Actions*/
-            PdfPCell action = new PdfPCell(new Phrase("Action"));
+
+
+            PdfPCell action = new PdfPCell(new Phrase("Link"));
             action.setBorderColor(BaseColor.BLACK);
             action.setPaddingLeft(10);
             action.setHorizontalAlignment(Element.ALIGN_CENTER);
             action.setVerticalAlignment(Element.ALIGN_CENTER);
-            action.setBackgroundColor(BaseColor.GRAY);
-
+            action.setBackgroundColor(BaseColor.LIGHT_GRAY);
             pdfPTable.addCell(action);
 
             for (Product product : products) {
+//                PdfPCell imageValue = new PdfPCell(Image.getInstance(product.getImageUrl()), true);
+//                imageValue.setPaddingLeft(10);
+//                imageValue.setHorizontalAlignment(Element.ALIGN_CENTER);
+//                imageValue.setVerticalAlignment(Element.ALIGN_CENTER);
+//                pdfPTable.addCell(imageValue);
+
+                /******/
+
                 PdfPCell titleValue = new PdfPCell(new Phrase(product.getName()));
                 titleValue.setBorderColor(BaseColor.BLACK);
                 titleValue.setPaddingLeft(10);
@@ -129,9 +145,11 @@ public class PdfService {
             return true;
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        } catch ( IOException | DocumentException ex ) {
+            ex.printStackTrace();
         }
+
+        return false;
     }
+
 }
