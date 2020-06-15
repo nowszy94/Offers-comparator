@@ -1,4 +1,4 @@
-package pl.endproject.offerscomparator.infrastructure.printPDFeature;
+package pl.endproject.offerscomparator.infrastructure.filesDownloader;
 
 
 import com.itextpdf.text.*;
@@ -7,23 +7,19 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
 import pl.endproject.offerscomparator.domain.Product;
+import pl.endproject.offerscomparator.infrastructure.filesDownloader.FileDownloaderService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-
-import java.io.IOException;
+import java.io.*;
 
 import java.util.List;
 
 @Service
-public class PdfService {
+public class PdfService extends FileDownloaderService {
 
-
-
-    public boolean createPdf(List<Product> products, ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) {
+    public void createPdf(List<Product> products, ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) {
         Document document = new Document(PageSize.A4, 15, 15, 45, 30);
         try {
             String filepath = servletContext.getRealPath("/resources/templates");
@@ -142,14 +138,12 @@ public class PdfService {
             }
             document.add(pdfPTable);
             document.close();
-            return true;
 
+            String fullPath = request.getServletContext().getRealPath("/resources/templates/getAll" + ".pdf");
+            fileDownload(fullPath, response, servletContext, "oferty.pdf");
 
-        } catch ( IOException | DocumentException ex ) {
+        } catch (IOException | DocumentException ex) {
             ex.printStackTrace();
         }
-
-        return false;
     }
-
 }
