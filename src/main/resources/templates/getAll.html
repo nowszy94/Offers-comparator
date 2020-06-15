@@ -215,6 +215,13 @@
             height: 70px;
         }
 
+        .autocomplete-suggestions {
+            background-color: white;
+            border-radius: 5px;
+            border-style: hidden;
+
+        }
+
     </style>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -232,16 +239,16 @@
 
 
 <script>
+
     $(document).ready(function () {
 
         $('#autocomplete-input').devbridgeAutocomplete({
+
             serviceUrl: '/suggestion',
             paramName: 'userSearch',
             minChars: 3,
             autoSelectFirst: true,
-
         });
-
     });
 </script>
 

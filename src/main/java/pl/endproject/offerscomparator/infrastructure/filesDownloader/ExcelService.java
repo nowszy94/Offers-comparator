@@ -33,6 +33,7 @@ public class ExcelService extends FileDownloaderService {
         return style;
     }
 
+    //TODO: refactor code
     public void generateExcel(List<Product> products, ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Offers comparator");
