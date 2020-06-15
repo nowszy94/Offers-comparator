@@ -202,3 +202,8 @@ table.table .avatar {
 .operation-buttons {
     margin-top: 15px;
 }
+.login-buttons{
+    margin-top: 8px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
