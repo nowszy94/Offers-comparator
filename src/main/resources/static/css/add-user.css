@@ -10,10 +10,7 @@ input {
  }
 
 /* Style the submit button */
-input[type=submit] {
-    background-color: #4CAF50;
-    color: white;
-}
+
 
 /* Style the container for inputs */
 .container {
