@@ -24,8 +24,6 @@ import java.util.List;
 
 @Controller
 public class ProductController {
-
-
     private ProductService productService;
     private final ReaderConfig readerConfig;
     private List<Product> products;
@@ -77,29 +75,14 @@ public class ProductController {
         return sw;
     }
 
-    @PostMapping("/getPdf")
-    public String downloadFile(@RequestParam String userSearch, HttpServletRequest request, HttpServletResponse response) {
+
+    @RequestMapping("/printPdf")
+    @ResponseBody
+    public void getPdfFile(HttpServletRequest request, HttpServletResponse response) {
         pdfService.createPdf(products, servletContext, request, response);
         String fullPath = request.getServletContext().getRealPath("/resources/templates/getAll" + ".pdf");
-        fileDownload(fullPath, response, "oferty-pl.pdf");
-//        getPdfFile(request, response);
-
-        return "redirect:/offers?userSearch=" + userSearch;
-
+        fileDownload(fullPath, response, "oferty.pdf");
     }
-
-
-    //    @RequestMapping("/printPdf")
-//    @ResponseBody
-//    public void getPdfFile(HttpServletRequest request, HttpServletResponse response) {
-////        String us = (String) request.getSession().getAttribute("userSearch");
-//
-////        List<Product> products = productService.findForPhrase(us);
-////        pdfService.createPdf(products, servletContext, request, response);
-//
-//        String fullPath = request.getServletContext().getRealPath("/resources/templates/getAll" + ".pdf");
-//        fileDownload(fullPath, response, "oferty-pl.pdf");
-//    }
 
     private void fileDownload(String fullPath, HttpServletResponse response, String fileName) {
         File file = new File(fullPath);
@@ -126,6 +109,4 @@ public class ProductController {
             }
         }
     }
-
-
 }
