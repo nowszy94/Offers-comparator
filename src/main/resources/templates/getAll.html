@@ -247,6 +247,18 @@
 
 <body>
 
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Offers comparator</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+    </div>
+</nav>
+
 <div class="container searching-field">
     <form th:action="@{/findProducts}" method="post" class="form-inline md-form mr-auto mb-4">
         <input name="userSearch" id="autocomplete-input" class="form-control mr-sm-2" type="text" th:name="userSearch"
