@@ -24,6 +24,8 @@ import java.util.List;
 public class ExcelService extends FileDownloaderService {
     @Autowired
     PdfService pdfService;
+    private Cell cell;
+    private Row row;
 
     private HSSFCellStyle createStyleForTitle(HSSFWorkbook workbook) {
         HSSFFont font = workbook.createFont();
@@ -33,15 +35,12 @@ public class ExcelService extends FileDownloaderService {
         return style;
     }
 
-    //TODO: refactor code
+
     public void generateExcel(List<Product> products, ServletContext servletContext, HttpServletRequest request, HttpServletResponse response) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Offers comparator");
 
         int rownum = 0;
-        Cell cell;
-        Row row;
-
         HSSFCellStyle style = createStyleForTitle(workbook);
 
         row = sheet.createRow(rownum);
@@ -62,7 +61,12 @@ public class ExcelService extends FileDownloaderService {
         cell.setCellValue("Link");
         cell.setCellStyle(style);
 
+        fillExcelFile(products, rownum, sheet);
+        getExcelFile(servletContext, request, response, workbook);
 
+    }
+
+    private void fillExcelFile(List<Product> products, int rownum, HSSFSheet sheet) {
         for (Product p : products) {
             rownum++;
             row = sheet.createRow(rownum);
@@ -84,6 +88,9 @@ public class ExcelService extends FileDownloaderService {
             cell.setCellValue(p.getUrl());
 
         }
+    }
+
+    private void getExcelFile(ServletContext servletContext, HttpServletRequest request, HttpServletResponse response, HSSFWorkbook workbook) {
         try {
             String filepath = servletContext.getRealPath("/resources/templates");
             File file = new File(filepath);

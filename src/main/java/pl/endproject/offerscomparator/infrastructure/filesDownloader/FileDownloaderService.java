@@ -27,7 +27,6 @@ public abstract class FileDownloaderService {
                 os.close();
                 file.delete();
 
-
             } catch (Exception e) {
                 e.getMessage();
             }
