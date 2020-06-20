@@ -13,6 +13,13 @@ public class OlxAdapter implements ProductRepository {
 
     @Override
     public List<Product> findByPhrase(String phrase) {
+        /*long a = System.currentTimeMillis();*/
+        List<Product> productList = getProductList(phrase);
+      /*  System.out.println("OLX: " + (System.currentTimeMillis() - a));*/
+        return productList;
+    }
+
+    private List<Product> getProductList(String phrase) {
         if (phrase == null || phrase.trim().isEmpty()) {
             throw new RuntimeException("Phrase cannot be empty");
         }

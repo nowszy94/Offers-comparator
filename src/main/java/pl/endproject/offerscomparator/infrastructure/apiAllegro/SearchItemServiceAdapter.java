@@ -25,12 +25,15 @@ public class SearchItemServiceAdapter implements ProductRepository {
         if (phrase == null || phrase.trim().isEmpty()) {
             throw new RuntimeException("Phrase cannot be empty");
         }
+        /*long a = System.currentTimeMillis();*/
+        List<Product> productList = mapRepoToDomain(searchItemService.findByPhrase(phrase));
+        /*System.out.println("ALLEGRO: " + (System.currentTimeMillis() - a));*/
         //list<Item> -> domain
-        return mapRepoToDomain(searchItemService.findByPhrase(phrase));
+        return productList;
     }
 
     private List<Product> mapRepoToDomain(List<Item> items) {
-            List<Product> productList = new ArrayList<>();
+        List<Product> productList = new ArrayList<>();
 
         for (Item item : items) {
             Product product = Product.builder()
