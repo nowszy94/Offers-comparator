@@ -31,3 +31,7 @@ $(document).ready(function()
 $("#myDiv").click(function() {
     $("#myForm").submit();
 });
+
+$('.stop-propagation').on('click', function (e) {
+    e.stopPropagation();
+});
