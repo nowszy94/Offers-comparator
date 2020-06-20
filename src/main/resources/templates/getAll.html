@@ -215,6 +215,13 @@
             height: 70px;
         }
 
+        .autocomplete-suggestions {
+            background-color: white;
+            border-radius: 5px;
+            border-style: hidden;
+
+        }
+
     </style>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -232,15 +239,16 @@
 
 
 <script>
+
     $(document).ready(function () {
 
         $('#autocomplete-input').devbridgeAutocomplete({
+
             serviceUrl: '/suggestion',
             paramName: 'userSearch',
             minChars: 3,
             autoSelectFirst: true,
         });
-
     });
 </script>
 
@@ -264,8 +272,9 @@
                     <h2><b>Searching Results</b></h2>
                 </div>
                 <div class="col-sm-7">
-                    <a href="#" class="btn btn-primary"><i class="material-icons">&#xe90d;</i> <span>Print to PDF</span></a>
-                    <a href="#" class="btn btn-primary"><i class="material-icons">&#xE24D;</i>
+                    <input type="hidden" name="userSearch" th:name="userSearch" th:value="${session.userSearch}">
+                    <a class="btn btn-primary" href="/printPdf"><i class="material-icons">&#xe90d;</i> <span>Print to PDF</span></a>
+                    <a href="/printExcel" class="btn btn-primary"><i class="material-icons">&#xE24D;</i>
                         <span>Export to Excel</span></a>
                 </div>
             </div>
@@ -296,7 +305,6 @@
                 <td><span class="material-icons">favorite</span></td>
             </tr>
             </tbody>
-
         </table>
     </div>
 </div>
