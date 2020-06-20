@@ -14,9 +14,9 @@ public class LokalnieAdapter implements ProductRepository {
 
     @Override
     public List<Product> findByPhrase(String phrase) {
-       /* long a = System.currentTimeMillis();*/
+        long a = System.currentTimeMillis();
         List<LokalnieProductDto> dto = adaptItemsFromScraper(phrase);
-        /*System.out.println("ALLEGRO LOKALNIE: " + (System.currentTimeMillis() - a));*/
+        System.out.println("ALLEGRO LOKALNIE: " + (System.currentTimeMillis() - a));
         return toDomain(dto);
     }
 

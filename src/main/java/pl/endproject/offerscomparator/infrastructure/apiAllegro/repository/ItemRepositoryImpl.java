@@ -48,7 +48,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     private Double getPriceWithShipping(Element singleElementFromAllegroPage) {
         try {
-            return Double.parseDouble(singleElementFromAllegroPage.selectFirst("._9c44d_1xKGX i").text().replace(" zł", "").replace(",", ".").replace(" ", "").replace("darmowa", String.valueOf(getPrice(singleElementFromAllegroPage))));
+            return Double.parseDouble(singleElementFromAllegroPage.selectFirst("._9c44d_21XN- i").text().replace(" zł", "").replace(",", ".").replace(" ", "").replace("darmowa", String.valueOf(getPrice(singleElementFromAllegroPage))));
         } catch (NullPointerException ex) {
             return null;
         }
@@ -63,10 +63,10 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     private String getImageUrlPath(Element singleElementFromAllegroPage) {
-        if (singleElementFromAllegroPage.selectFirst("._9c44d_1MOYf img").attr("data-src").isBlank()) {
-            return singleElementFromAllegroPage.selectFirst("._9c44d_1MOYf img").attr("src");
+        if (singleElementFromAllegroPage.selectFirst("._9c44d_1ILhl img").attr("data-src").isBlank()) {
+            return singleElementFromAllegroPage.selectFirst("._9c44d_1ILhl img").attr("src");
         } else {
-            return singleElementFromAllegroPage.selectFirst("._9c44d_1MOYf img").attr("data-src");
+            return singleElementFromAllegroPage.selectFirst("._9c44d_1ILhl img").attr("data-src");
         }
     }
 

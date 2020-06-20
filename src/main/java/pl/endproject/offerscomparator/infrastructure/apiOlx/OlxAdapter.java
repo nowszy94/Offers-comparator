@@ -13,9 +13,9 @@ public class OlxAdapter implements ProductRepository {
 
     @Override
     public List<Product> findByPhrase(String phrase) {
-        /*long a = System.currentTimeMillis();*/
+        long a = System.currentTimeMillis();
         List<Product> productList = getProductList(phrase);
-      /*  System.out.println("OLX: " + (System.currentTimeMillis() - a));*/
+        System.out.println("OLX: " + (System.currentTimeMillis() - a));
         return productList;
     }
 
