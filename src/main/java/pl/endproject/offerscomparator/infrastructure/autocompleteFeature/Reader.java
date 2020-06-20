@@ -25,7 +25,7 @@ public class Reader {
             if (s.startsWith(searchStr)) {
                 suggestions.add(s);
             }
-            if (suggestions.size() > 4) {
+            if (suggestions.size() > 3) {
                 break;
             }
         }
