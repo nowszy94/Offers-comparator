@@ -24,11 +24,13 @@ import java.util.List;
 public class ProductController {
     private ProductService productService;
     private final ReaderConfig readerConfig;
+    private Reader reader;
     private List<Product> products;
 
-    public ProductController(ProductService productService, ReaderConfig readerConfig) {
+    public ProductController(ProductService productService, ReaderConfig readerConfig,Reader reader) {
         this.productService = productService;
         this.readerConfig = readerConfig;
+        this.reader = reader;
     }
 
     public List<Product> getProducts() {
@@ -38,13 +40,28 @@ public class ProductController {
     @GetMapping("/offers")
     public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch) {
         if (!userSearch.isBlank()) {
-            products = productService.findForPhrase(userSearch);
+            /*benchmark(userSearch);*/
+
+            products = productService.findForPhraseAsync(userSearch);
+
             if (products.isEmpty()) {
                 return "no-results";
             }
             model.addAttribute("products", products);
         }
         return "getAll";
+    }
+
+    private void benchmark(String userSearch) {
+        long synchronizedStart = System.currentTimeMillis();
+        productService.findForPhrase(userSearch);
+        System.out.println("Synchronized action: ");
+        System.out.println(System.currentTimeMillis() - synchronizedStart);
+
+        long asynchronizedStart = System.currentTimeMillis();
+        productService.findForPhraseAsync(userSearch);
+        System.out.println("Asynchronized action: ");
+        System.out.println(System.currentTimeMillis() - asynchronizedStart);
     }
 
     @PostMapping("/findProducts")

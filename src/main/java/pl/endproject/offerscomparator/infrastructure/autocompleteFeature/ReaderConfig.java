@@ -2,6 +2,7 @@ package pl.endproject.offerscomparator.infrastructure.autocompleteFeature;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class ReaderConfig {
     @Bean
     public Reader readerFromFile() {
         List<String> wordsFromTextFile = readWordsFromFile();
+        System.out.println("REading from file");
         return new Reader(wordsFromTextFile);
     }
 
