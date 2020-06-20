@@ -128,4 +128,15 @@ public class UserServiceImpl implements UserService {
     public void delete(User user) {
         userDao.delete(user);
     }
+
+
+    public User loginUser(String usernameFromInput, String passwordFromInput) {
+        User foundUser = null;
+        if (isUserValid(usernameFromInput, usernameFromInput, passwordFromInput)) {
+            foundUser = userDao.findUserByLoginOrEmail(usernameFromInput, usernameFromInput);
+        }else{
+            setFailureCause("User doesn't exist");
+        }
+        return foundUser;
+    }
 }
