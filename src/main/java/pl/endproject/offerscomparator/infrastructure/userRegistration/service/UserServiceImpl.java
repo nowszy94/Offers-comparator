@@ -132,43 +132,11 @@ public class UserServiceImpl implements UserService {
 
     public User loginUser(String usernameFromInput, String passwordFromInput) {
         User foundUser = null;
-        try {
-            foundUser = findUser(usernameFromInput);
-            checkIfUserIsValid(foundUser, passwordFromInput);
-        } catch (InvalidUser invalidUser) {
-            invalidUser.getMessage();
-            return null;
+        if (isUserValid(usernameFromInput, usernameFromInput, passwordFromInput)) {
+            foundUser = userDao.findUserByLoginOrEmail(usernameFromInput, usernameFromInput);
+        }else{
+            setFailureCause("User doesn't exist");
         }
         return foundUser;
     }
-
-    private User findUser(String usernameFromInput) throws InvalidUser {
-        if (getUserByEmail(usernameFromInput) == null && getUserByLogin(usernameFromInput) == null) {
-            throw new InvalidUser("Invalid email or login");
-        } else if (getUserByLogin(usernameFromInput) != null) {
-            return getUserByLogin(usernameFromInput);
-        } else {
-            return getUserByEmail(usernameFromInput);
-        }
-
-    }
-
-    private boolean checkIfUserIsValid(User foundedUser, String passwordFromInput) throws InvalidUser {
-        if (foundedUser != null
-                && PasswordUtil.checkPassword(passwordFromInput, foundedUser.getPassword())
-                && foundedUser.getActive()) {
-            return true;
-        }
-        throw new InvalidUser("Wrong password or user is not active");
-    }
-
-    private User getUserByEmail(String email) {
-        return userDao.findUserByEmail(email);
-    }
-
-    private User getUserByLogin(String login) {
-        return userDao.findUserByLogin(login);
-    }
-
-
 }
