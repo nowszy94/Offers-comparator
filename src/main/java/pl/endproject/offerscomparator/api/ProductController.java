@@ -13,6 +13,7 @@ import pl.endproject.offerscomparator.infrastructure.autocompleteFeature.Suggest
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.URLEncoder;
 
@@ -38,7 +39,7 @@ public class ProductController {
     }
 
     @GetMapping("/offers")
-    public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch) {
+    public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch, HttpSession session) {
         if (!userSearch.isBlank()) {
             /*benchmark(userSearch);*/
 
@@ -48,6 +49,7 @@ public class ProductController {
                 return "no-results";
             }
             model.addAttribute("products", products);
+            session.setAttribute("products",products);
         }
         return "getAll";
     }
