@@ -34,6 +34,11 @@ public class ProductController {
         this.reader = reader;
     }
 
+    @GetMapping("/")
+    public String main() {
+        return "redirect:/offers";
+    }
+
     @GetMapping("/offers")
     public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch, HttpSession session) {
         if (!userSearch.isBlank()) {
@@ -75,7 +80,7 @@ public class ProductController {
     public SuggestionsWrapper autocompleteSuggestions(@RequestParam("userSearch") String userSearch) {
         ArrayList<Phrase> suggestions = new ArrayList<>();
         SuggestionsWrapper sw = new SuggestionsWrapper();
-        Reader reader = readerConfig.readerFromFile();
+        reader = readerConfig.readerFromFile();
 
         List<String> wordsFromReader = reader.getWords(userSearch);
         for (String productName : wordsFromReader) {
