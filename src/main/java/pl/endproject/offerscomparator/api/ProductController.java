@@ -41,9 +41,9 @@ public class ProductController {
 
     @GetMapping("/offers")
     public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch, HttpSession session) {
+       session.setAttribute("products",null);
         if (!userSearch.isBlank()) {
             /*benchmark(userSearch);*/
-
             products = productService.findForPhraseAsync(userSearch);
 
             if (products.isEmpty()) {
@@ -90,4 +90,5 @@ public class ProductController {
         }
         return sw;
     }
+
 }
