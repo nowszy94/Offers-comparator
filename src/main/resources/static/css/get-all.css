@@ -199,6 +199,14 @@ table.table .avatar {
     width: 60px;
     height: 70px;
 }
+.operation-buttons {
+    margin-top: 15px;
+}
+.login-buttons {
+    margin-top: 8px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
 
 .autocomplete-suggestions {
     background-color: white;

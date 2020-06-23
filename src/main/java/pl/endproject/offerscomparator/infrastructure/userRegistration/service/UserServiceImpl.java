@@ -11,6 +11,7 @@ import pl.endproject.offerscomparator.infrastructure.userRegistration.util.Passw
 import pl.endproject.offerscomparator.infrastructure.userRegistration.util.TextValidator;
 
 import javax.mail.Session;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,11 @@ public class UserServiceImpl implements UserService {
     private User user;
     private Session switchMailSource = MailYandexProperties.config();
     private String failureCause;
+    private UserLoginStatus userLoginStatus;
+
+    public UserLoginStatus getUserLoginStatus() {
+        return userLoginStatus;
+    }
 
     public String getFailureCause() {
         return failureCause;
@@ -44,13 +50,27 @@ public class UserServiceImpl implements UserService {
     public boolean isUserValid(String login, String email, String password) {
         if (checkIfEmailAndLoginAreNotNull(login, email)) {
             this.user = userDao.findUserByLoginOrEmail(login.toLowerCase(), email.toLowerCase());
-            return user != null && PasswordUtil.checkPassword(password, user.getPassword()) && user.getActive();
+            if (user == null) {
+                userLoginStatus = UserLoginStatus.WRONG_LOGIN;
+                return false;
+            } else if (!PasswordUtil.checkPassword(password, user.getPassword())) {
+                userLoginStatus = UserLoginStatus.WRONG_PASS;
+                return false;
+            } else if (!user.getActive()) {
+                userLoginStatus = UserLoginStatus.NOT_ACTIVE;
+                return false;
+            }
         }
-        return false;
+        userLoginStatus = UserLoginStatus.SUCCESS;
+        return true;
     }
 
     private boolean checkIfEmailAndLoginAreNotNull(String login, String email) {
-        return login != null && email != null;
+        if (login == null || email == null) {
+            userLoginStatus = UserLoginStatus.EMPTY_INPUT;
+            return false;
+        }
+        return true;
     }
 
 
@@ -134,7 +154,7 @@ public class UserServiceImpl implements UserService {
         User foundUser = null;
         if (isUserValid(usernameFromInput, usernameFromInput, passwordFromInput)) {
             foundUser = userDao.findUserByLoginOrEmail(usernameFromInput, usernameFromInput);
-        }else{
+        } else {
             setFailureCause("User doesn't exist");
         }
         return foundUser;

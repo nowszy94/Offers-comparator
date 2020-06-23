@@ -4,5 +4,6 @@ insert INTO users (user_id, login, password, email, token,active,points,last_upd
 values (nextval('user_seq'),'dev2','$2a$12$.mmDJgNVKpog5tA9NgLYSOgEafJ7Bv83rtkK7BI/vh4tdyvObGmH2','dev2@test.pl','testtokentesttokentesttoken2',true, 5,current_date ,'user');
 insert INTO users (user_id, login, password, email, token,active,points,last_update, role)
 values (nextval('user_seq'),'dev3','$2a$12$W2EhU1dx/Q34PjtBtsjVq.UUVu1E4kyYmffd77u0pp2hivdSRt3Q6','dev3@test.pl','testtokentesttokentesttoken3',false, 0,current_date ,'admin');
-
+insert INTO users (user_id, login, password, email, token,active,points,last_update, role)
+values (nextval('user_seq'),'dev4','$2a$12$dkcFX2NtjIUPyX.DsKlne.GTaAB1I.7vu.YwVB2b4UXfA5ppKttHy','dev4@test.pl','testtokentesttokentesttoken4',true, 0,current_date ,'admin');
 commit ;

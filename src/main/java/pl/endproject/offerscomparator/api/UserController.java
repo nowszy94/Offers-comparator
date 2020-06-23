@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.model.User;
-import pl.endproject.offerscomparator.infrastructure.userRegistration.service.InvalidUser;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,15 +71,13 @@ public class UserController {
         User loginUser = userService.loginUser(username, password);
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser);
-        } else {
-            System.out.println("User doesn't exists");
         }
         return "redirect:/offers";
     }
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {
-        session.setAttribute("loginUser", null);
+        session.setAttribute("loginUser",null);
         return "redirect:/offers";
     }
 
