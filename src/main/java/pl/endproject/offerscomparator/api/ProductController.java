@@ -52,7 +52,7 @@ public class ProductController {
             model.addAttribute("products", products);
             session.setAttribute("products", products);
         }
-        return "getAll";
+        return "get-all";
     }
 
     private void benchmark(String userSearch) {
