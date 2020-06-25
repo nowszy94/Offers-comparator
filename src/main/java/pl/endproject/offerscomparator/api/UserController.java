@@ -71,13 +71,16 @@ public class UserController {
         User loginUser = userService.loginUser(username, password);
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser);
+        } else {
+            session.setAttribute("loginStatus", userService.getUserLoginStatus().toString());
         }
         return "redirect:/offers";
     }
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {
-        session.setAttribute("loginUser",null);
+        session.setAttribute("loginUser", null);
+        session.setAttribute("loginStatus", null);
         return "redirect:/offers";
     }
 

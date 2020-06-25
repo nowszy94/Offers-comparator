@@ -36,9 +36,8 @@ $('.stop-propagation').on('click', function (e) {
     e.stopPropagation();
 });
 
-setTimeout(fade_out, 3000);
+setTimeout(fade_out, 10000);
 
 function fade_out() {
     $("#loginStatus").fadeOut().empty();
-    $("#loginStatus2").fadeOut().empty();
 }

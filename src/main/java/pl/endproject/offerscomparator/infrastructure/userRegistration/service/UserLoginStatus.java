@@ -1,11 +1,9 @@
 package pl.endproject.offerscomparator.infrastructure.userRegistration.service;
 
 public enum UserLoginStatus {
-    SUCCESS(1, "Successfully logged in "),
-    EMPTY_INPUT(2, "You must fill every input"),
-    NOT_ACTIVE(3, "Your account is not active. Check your email."),
-    WRONG_LOGIN(4, "Wrong username/email"),
-    WRONG_PASS(5, "Wrong password");
+    NOT_ACTIVE(1, "Your account is not active. Check your email."),
+    WRONG_LOGIN(2, "Wrong username/email"),
+    WRONG_PASS(3, "Wrong password");
 
     private final int code;
     private final String description;

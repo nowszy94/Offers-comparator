@@ -61,13 +61,11 @@ public class UserServiceImpl implements UserService {
                 return false;
             }
         }
-        userLoginStatus = UserLoginStatus.SUCCESS;
         return true;
     }
 
     private boolean checkIfEmailAndLoginAreNotNull(String login, String email) {
         if (login == null || email == null) {
-            userLoginStatus = UserLoginStatus.EMPTY_INPUT;
             return false;
         }
         return true;

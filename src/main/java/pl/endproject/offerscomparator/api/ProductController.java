@@ -51,6 +51,7 @@ public class ProductController {
             }
             model.addAttribute("products", products);
             session.setAttribute("products", products);
+            session.setAttribute("loginStatus", null);
         }
         return "get-all";
     }
