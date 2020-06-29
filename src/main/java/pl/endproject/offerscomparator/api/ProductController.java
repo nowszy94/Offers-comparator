@@ -13,11 +13,11 @@ import pl.endproject.offerscomparator.infrastructure.autocompleteFeature.Suggest
 
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.URLEncoder;
+
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -42,8 +42,8 @@ public class ProductController {
     }
 
     @GetMapping("/offers")
-    public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch, HttpSession session) {
-       session.setAttribute("products",null);
+    public String getOffers(Model model, @RequestParam(value = "userSearch", required = false, defaultValue = "") String userSearch, HttpSession session, HttpServletResponse response) {
+        session.setAttribute("products", null);
 
         if (!userSearch.isBlank()) {
             /*benchmark(userSearch);*/
@@ -54,6 +54,10 @@ public class ProductController {
             }
             model.addAttribute("products", products);
             session.setAttribute("products", products);
+
+            Cookie newCookie = new Cookie("myCookie", "1");
+            newCookie.setMaxAge(30000);
+            response.addCookie(newCookie);
         }
         return "getAll";
     }
@@ -71,7 +75,7 @@ public class ProductController {
     }
 
     @PostMapping("/findProducts")
-    public String findOffers(@RequestParam String userSearch, HttpServletRequest request) throws UnsupportedEncodingException {
+    public String findOffers(@RequestParam String userSearch) throws UnsupportedEncodingException {
         String encodedUserSearch = URLEncoder.encode(userSearch, StandardCharsets.UTF_8.toString());
 
         return "redirect:/offers?userSearch=" + encodedUserSearch;

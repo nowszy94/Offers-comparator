@@ -1,4 +1,4 @@
-/* jQuery function to add loading spinner for Excel*/
+/* jQuery function to add loading spinner for Excel with setTimeOut*/
 $('#loading').on('click', function () {
     $(this).button('loading');
     setTimeout(function () {
@@ -6,57 +6,38 @@ $('#loading').on('click', function () {
     }, 1000);
 });
 
-/* jQuery function to add loading spinner for PDF*/
-// $('#loading-pdf').on('click', function () {
-//     $(this).button('loading');
-//     setTimeout(function () {
-//         $("#loading-pdf").button('reset');
-//     }, 10000);
-// });
-
-
-/* Setting cookies for downloading pdf*/
-const setCookie = function (name, value, expiracy) {
-    const exdate = new Date();
-    exdate.setTime(exdate.getTime() + expiracy * 1000);
-    const c_value = escape(value) + ((expiracy == null) ? "" : "; expires=" + exdate.toUTCString());
-    document.cookie = name + "=" + c_value + '; path=/';
-};
-
-const getCookie = function (name) {
-    var i, x, y, ARRcookies = document.cookie.split(";");
-    for (i = 0; i < ARRcookies.length; i++) {
-        x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
-        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
-        x = x.replace(/^\s+|\s+$/g, "");
-        if (x == name) {
-            return y ? decodeURI(unescape(y.replace(/\+/g, ' '))) : y; //;//unescape(decodeURI(y));
-        }
+/* JS function to find cookie created in backend*/
+var getCookie = function (name) {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; ++i) {
+        var pair = cookies[i].trim().split('=');
+        if (pair[0] == name)
+            return pair[1];
     }
+    return null;
 };
-
-$('#loading-pdf').on('click', function () {
-    $(this).button('loading');
-    setCookie('downloadStarted', 0, 100); //Expiration could be anything... As long as we reset the value
+/* JS function to add loading spinner to PDF button*/
+const loadAnimationButton = document.querySelector('#loading-pdf');
+loadAnimationButton.addEventListener('click', function () {
+    loadAnimationButton.innerHTML = "<i class='fa fa-spinner fa-spin'></i><span>Loading...</span>";
+    alert('Początek pobierania');
     setTimeout(checkDownloadCookie, 1000);
 });
 
 
 let downloadTimeout;
 const checkDownloadCookie = function () {
-    if (getCookie("downloadStarted") == 1) {
-        console.log('This is a message from cookie = 1');
-        setCookie("downloadStarted", 0, 100); // false,   Expiration could be anything... As long as we reset the value
-        $("#loading-pdf").button('reset');
+    if (getCookie("myCookie") == 1) {
+        loadAnimationButton.innerHTML = "<i class='material-icons'>&#xe90d;</i><span>Print to PDF</span>";
     } else {
-        downloadTimeout = setTimeout(checkDownloadCookie, 1000); //Re-run this function in 1 second.
+        downloadTimeout = setTimeout(checkDownloadCookie, 1000);
     }
 };
 
 
 
+/* jQuery autocomplete turn on */
 $(document).ready(function () {
-
     $('#autocomplete-input').devbridgeAutocomplete({
         serviceUrl: '/suggestion',
         paramName: 'userSearch',
@@ -68,18 +49,5 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
-
-
-document.getElementById('pdf-href').addEventListener("click", function () {
-    document.querySelector('.bg-modal').style.display = "flex";
-});
-document.getElementById('excel-href').addEventListener("click", function () {
-    document.querySelector('.bg-modal').style.display = "flex";
-});
-
-document.querySelector('.close').addEventListener("click", function () {
-    document.querySelector('.bg-modal').style.display = "none";
-});
-
 
 
