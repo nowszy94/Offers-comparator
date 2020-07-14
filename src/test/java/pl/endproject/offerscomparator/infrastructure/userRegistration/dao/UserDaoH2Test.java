@@ -75,7 +75,7 @@ public class UserDaoH2Test {
     @Test(expected = IncorrectResultSizeDataAccessException.class)
     public void shouldThrowIncorrectResultSizeDataAccessExceptionWhenLoginAndEmailHasAlreadyExist() {
         //given
-        String login = "Anna";
+        String login = "anna";
         String email = "jk@test.pl";
         //when
         userDao.findUserByLoginOrEmail(login, email);
@@ -145,29 +145,29 @@ public class UserDaoH2Test {
 
     private List<TestCase> testCasesAllParametersAreCovered() {
         return Arrays.asList(
-                new TestCase("Jan", null, null, null, null),
+                new TestCase("jan", null, null, null, null),
                 new TestCase(null, "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null, null, null),
                 new TestCase(null, null, "jk@test.pl", null, null),
                 new TestCase(null, null, null, "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null),
                 new TestCase(null, "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null, "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null),
-                new TestCase("Jan", null, "jk@test.pl", null, null),
+                new TestCase("jan", null, "jk@test.pl", null, null),
                 new TestCase(null, null, "jk@test.pl", "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", userDao.findById(1L).get()),
-                new TestCase("Jan", "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null, "Nowak", userDao.findById(1L).get()),
+                new TestCase("jan", "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null, "Nowak", userDao.findById(1L).get()),
                 new TestCase(null, null, "jk@test.pl", "wrong password", null),
                 new TestCase(null, null, "wrongEmail@test.pl", "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null),
-                new TestCase("Jan", "wrong password", null, "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null),
+                new TestCase("jan", "wrong password", null, "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null),
                 new TestCase("wrong name", "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null, "$2a$12$4kqOmPr2uOBrqVAETBb0BOPejzEHinA5itgsDZyI39yKrNPiPLwri", null)
         );
     }
 
     private List<TestCase> testCasesSelectedParametersAreCovered() {
         return Arrays.asList(
-                new TestCase("Jan", null, userDao.findById(1L).get()),
+                new TestCase("jan", null, userDao.findById(1L).get()),
                 new TestCase(null, "jk@test.pl", userDao.findById(1L).get()),
-                new TestCase("Janek", "jk@test.pl", userDao.findById(1L).get()),
-                new TestCase("Jan", "jz@test.pl", userDao.findById(1L).get()),
-                new TestCase("Jan", "jk@test.pl", userDao.findById(1L).get()),
-                new TestCase("Janek", "jz@test.pl", null)
+                new TestCase("janek", "jk@test.pl", userDao.findById(1L).get()),
+                new TestCase("jan", "jz@test.pl", userDao.findById(1L).get()),
+                new TestCase("jan", "jk@test.pl", userDao.findById(1L).get()),
+                new TestCase("janek", "jz@test.pl", null)
         );
     }
 

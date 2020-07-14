@@ -10,7 +10,7 @@ public class PasswordUtilTest {
     @Test
     public void shouldHashPasswordWhenPlainTextIsGiven() {
         //given
-        String password_plaintext="testPassword";
+        String password_plaintext="gadzinski";
 
         //when
         String actual = PasswordUtil.hashPassword(password_plaintext);
