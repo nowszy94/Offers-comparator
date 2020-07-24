@@ -5,11 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.model.User;
-import pl.endproject.offerscomparator.infrastructure.userRegistration.service.InvalidUser;
 import pl.endproject.offerscomparator.infrastructure.userRegistration.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,6 +80,11 @@ public class UserController {
     public String logout(HttpSession session) {
         session.setAttribute("loginUser", null);
         return "redirect:/offers";
+    }
+
+    @GetMapping("/profile")
+    public String profile (HttpSession session){
+        return "user-profile";
     }
 
 }

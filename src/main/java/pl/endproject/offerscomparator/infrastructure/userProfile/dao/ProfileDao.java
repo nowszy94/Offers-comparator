@@ -1,9 +1,16 @@
 package pl.endproject.offerscomparator.infrastructure.userProfile.dao;
 
+
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Component;
 import pl.endproject.offerscomparator.infrastructure.userProfile.model.Profile;
 
-@Component
+import java.util.List;
+
+
 public interface ProfileDao extends MongoRepository<Profile, String> {
+    Profile findProfileByEmail(String email);
+    Boolean existsByEmail(String email);
+
+    @Override
+    List<Profile> findAll();
 }
