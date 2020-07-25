@@ -10,6 +10,7 @@ import java.util.List;
 public interface ProfileDao extends MongoRepository<Profile, String> {
     Profile findProfileByEmail(String email);
     Boolean existsByEmail(String email);
+    Boolean deleteByEmail(String email);
 
     @Override
     List<Profile> findAll();
