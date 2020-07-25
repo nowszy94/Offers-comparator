@@ -123,7 +123,7 @@ public class UserController {
                 userProfile.getAddress().setAddress1(request.getParameter("address1"));
                 userProfile.getAddress().setAddress2(request.getParameter("address2"));
                 userProfile.getAddress().setZipCode(request.getParameter("zipCode"));
-                userProfile.getAddress().setCityTown(request.getParameter("zipCode"));zipCode
+                userProfile.getAddress().setCityTown(request.getParameter("cityTown"));
                 userProfile.getAddress().setCountry(request.getParameter("country"));
 
                 break;
