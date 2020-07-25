@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Offers Comparator</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link th:fragment="navbarStyles" href="../static/css/commonComponents/navbar.css" th:href="@{/css/commonComponents/navbar.css}"
+          rel="stylesheet"/>
+
+</head>
+<body>
+<nav th:fragment="navbar" class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/offers">Offers comparator</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <th:block th:if="${session.loginUser == null}">
+                <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <i class="glyphicon glyphicon-log-in"></i> Sign In
+                    </a>
+                    <div class="dropdown-menu form-login stop-propagation" role="menu">
+                        <form th:action="@{/login}" method="post">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">
+                                    <i class="glyphicon glyphicon-envelope"></i> Email address / Username
+                                </label>
+                                <input th:name="username" type="email" class="form-control" id="exampleInputEmail1"
+                                       placeholder="Enter email / uername"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">
+                                    <i class="glyphicon glyphicon-lock"></i> Password
+                                </label>
+                                <input th:name="password" type="password" class="form-control"
+                                       id="exampleInputPassword1"
+                                       placeholder="Enter password"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block"><i
+                                    class="glyphicon glyphicon-ok"></i>
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+
+                </li>
+            </th:block>
+            <th:block th:if="${session.loginUser != null}">
+                <div class="welcome-user" style="color: #ddd6ff"
+                     th:text="'Hello ' + ${session.loginUser.getLogin()}"></div>
+                <div class="dropdown">
+                    <a class="account">
+                        <img src="images/avatar.png" class="profile-circle"/>
+                    </a>
+                    <div class="submenu" style="display: none; ">
+                        <ul class="root">
+                            <li><a href="/profile">Profile</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <form id="myForm" th:action="@{/logout}" method="post">
+                               <div id="myDiv"><li><a href="#">Log out</a></li></div>
+                            </form>
+                        </ul>
+                    </div>
+                </div>
+            </th:block>
+        </ul>
+    </div>
+</nav>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- JQuery -->
+<script type="text/javascript" th:src="@{/js/jquery-3.2.0.min.js}"></script>
+<!--Import https://www.devbridge.com/sourcery/components/jquery-autocomplete/#-->
+<script type="text/javascript" th:src="@{/js/jquery.autocomplete.js}"></script>
+<!-- Compiled and minified JavaScript -->
+<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
+
+<script th:fragment="navbarScripts" type="text/javascript" src="../static/js/commonComponents/navbar.js"
+        th:src="@{/js/commonComponents/navbar.js}"></script>
+</body>
+</html>
+

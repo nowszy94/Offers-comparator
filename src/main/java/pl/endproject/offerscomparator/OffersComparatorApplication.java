@@ -8,6 +8,7 @@ public class OffersComparatorApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(OffersComparatorApplication.class, args);
+
     }
 
 }
