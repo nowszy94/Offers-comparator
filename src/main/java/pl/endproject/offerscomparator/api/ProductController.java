@@ -28,14 +28,15 @@ public class ProductController {
     private Reader reader;
     private List<Product> products;
 
-    public ProductController(ProductService productService, ReaderConfig readerConfig,Reader reader) {
+    public ProductController(ProductService productService, ReaderConfig readerConfig, Reader reader) {
         this.productService = productService;
         this.readerConfig = readerConfig;
         this.reader = reader;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    @GetMapping("/")
+    public String main() {
+        return "redirect:/offers";
     }
 
     @GetMapping("/offers")
@@ -49,7 +50,7 @@ public class ProductController {
                 return "no-results";
             }
             model.addAttribute("products", products);
-            session.setAttribute("products",products);
+            session.setAttribute("products", products);
         }
         return "getAll";
     }
@@ -79,7 +80,7 @@ public class ProductController {
     public SuggestionsWrapper autocompleteSuggestions(@RequestParam("userSearch") String userSearch) {
         ArrayList<Phrase> suggestions = new ArrayList<>();
         SuggestionsWrapper sw = new SuggestionsWrapper();
-        Reader reader = readerConfig.readerFromFile();
+        reader = readerConfig.readerFromFile();
 
         List<String> wordsFromReader = reader.getWords(userSearch);
         for (String productName : wordsFromReader) {
